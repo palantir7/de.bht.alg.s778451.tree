@@ -1,4 +1,4 @@
-package algo;
+package math.algo;
 
 
 public interface Algo {

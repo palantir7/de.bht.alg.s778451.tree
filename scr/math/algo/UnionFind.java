@@ -1,4 +1,4 @@
-package algo;
+package math.algo;
 
 public class UnionFind {
 	private int[] parents;

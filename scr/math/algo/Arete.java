@@ -1,4 +1,4 @@
-package algo;
+package math.algo;
 
 public class Arete implements Comparable<Arete> {
 	private int u;

@@ -1,4 +1,4 @@
-package algo;
+package math.algo;
 
 import java.util.PriorityQueue;
 import java.util.List;
