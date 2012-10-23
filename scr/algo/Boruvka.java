@@ -1,4 +1,4 @@
-package algorithme;
+package algo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 
-public class Boruvka implements Algorithme {
+public class Boruvka implements Algo {
 
         public Graphe appliquer(Graphe graphe) {
                 List<Arete> aretes = new ArrayList<Arete>(graphe.getAretes());

@@ -1,4 +1,4 @@
-package algorithme;
+package algo;
 
 public class UnionFind {
 	private int[] parents;

@@ -1,11 +1,11 @@
-package algorithme;
+package algo;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 
-public class Kruskal implements Algorithme {
+public class Kruskal implements Algo {
         public Graphe appliquer(Graphe g){
 		List<Arete> aretes = g.getAretes();
                 Collections.sort(aretes, Collections.reverseOrder());

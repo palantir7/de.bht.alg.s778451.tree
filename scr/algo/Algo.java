@@ -1,7 +1,7 @@
-package algorithme;
+package algo;
 
 
-public interface Algorithme {
+public interface Algo {
         
         Graphe appliquer(Graphe graphe);
         
