@@ -1,6 +1,7 @@
 package graph;
 
-/** Eine Klasse, die Knoten eines Graphen repräsentiert
+/**
+ * Eine Klasse, die Knoten eines Graphen repräsentiert
  * 
  * @author ripphausen
  * @version 1.0
@@ -11,11 +12,11 @@ public class Vertex {
 	public Vertex(int id) {
 		this.id = id;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public String toString() {
 		return new Integer(id).toString();
 	}
