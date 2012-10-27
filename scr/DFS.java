@@ -1,12 +1,10 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-
 import graph.Edge;
 import graph.Graph;
 import graph.GraphLesen;
 import graph.Vertex;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 public class DFS {
 
@@ -60,11 +58,11 @@ public class DFS {
 	// Schaut ob Punkt u und Punkt v eine Kante haben
 	private static boolean isEdge(int u, int v) {
 		Collection<Vertex> neighbor = graph.getNeighbours(u);
-		
+
 		for (Iterator i = neighbor.iterator(); i.hasNext();) {
 			Vertex x = (Vertex) i.next();
-			if(x.equals(graph.getVertex(v))){
-				// hier kann die GUI angeschlossen werden 
+			if (x.equals(graph.getVertex(v))) {
+				// hier kann die GUI angeschlossen werden
 				// hier wird bei true der Status von Weiß zu Grau zu Schwarz
 				System.out.println(u + " -> " + neighbor + " -> " + v);
 				return true;
