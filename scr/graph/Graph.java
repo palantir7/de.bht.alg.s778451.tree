@@ -345,7 +345,7 @@ public class Graph<V extends Vertex, E extends Edge<V>> {
 
 	public String toString() {
 		StringBuffer s = new StringBuffer("Graph mit " + vertexIndex.size()
-				+ "Knoten\n");
+				+ " Knoten\n");
 		int i = 0;
 		for (V v : vertices) {
 			if (v != null) {

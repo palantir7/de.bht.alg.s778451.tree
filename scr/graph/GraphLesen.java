@@ -3,7 +3,6 @@ package graph;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 /**
  * Klasse mit Funktionen zum Erzeugen von Graphen anhand von Dateien
