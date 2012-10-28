@@ -14,9 +14,10 @@ public class DFS {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void run(String file) {
 		// URL zu Zieldatei
-		String url = "F:\\GitHub\\de.bht.alg.s778451.tree\\scr\\dat\\graph20.txt";
+		// String url = "F:\\GitHub\\de.bht.alg.s778451.tree\\scr\\dat\\graph20.txt";
+		String url = file;
 		// Lade Graph der Zieldatei
 		Graph<Vertex, Edge<Vertex>> G = GraphLesen.FileToGraph(url, false);
 

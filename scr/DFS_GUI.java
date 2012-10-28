@@ -1,11 +1,18 @@
+import graph.Edge;
+import graph.Graph;
+import graph.GraphLesen;
+import graph.Vertex;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.*;
 import javax.swing.border.*;
 
-class JavaPaintUI extends JFrame {
+class DFS_GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private int tool = 1;
 	private JFileChooser fc;
@@ -17,18 +24,23 @@ class JavaPaintUI extends JFrame {
 	private static String name = null;
 	private static String file = null;
 
-	public JavaPaintUI() {
+	static int vertexCount;
+	static Graph graph;
+
+	public DFS_GUI() {
 		fc = new JFileChooser();
-		int returnVal = fc.showOpenDialog(JavaPaintUI.this);
+		int returnVal = fc.showOpenDialog(DFS_GUI.this);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
-			JavaPaintUI.setFile(file.getAbsolutePath());
+			DFS_GUI.setFile(file.getAbsolutePath());
 			// Testausgabe in der Console
-			System.out.println(JavaPaintUI.file);
+			System.out.println(DFS_GUI.file);
 		}
 
 		initComponents();
+
+		run(DFS_GUI.file);
 	}
 
 	private void initComponents() {
@@ -87,7 +99,7 @@ class JavaPaintUI extends JFrame {
 	public static void main(String args[]) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				new JavaPaintUI().setVisible(true);
+				new DFS_GUI().setVisible(true);
 			}
 		});
 	}
@@ -124,59 +136,59 @@ class JavaPaintUI extends JFrame {
 	private void selectNode(int number) {
 		switch (number) {
 		case 0:
-			JavaPaintUI.x = 85;
-			JavaPaintUI.y = 35;
-			JavaPaintUI.name = "0";
+			DFS_GUI.x = 85;
+			DFS_GUI.y = 35;
+			DFS_GUI.name = "0";
 			break;
 		case 1:
-			JavaPaintUI.x = 55;
-			JavaPaintUI.y = 65;
-			JavaPaintUI.name = "1";
+			DFS_GUI.x = 55;
+			DFS_GUI.y = 65;
+			DFS_GUI.name = "1";
 			break;
 		case 2:
-			JavaPaintUI.x = 115;
-			JavaPaintUI.y = 65;
-			JavaPaintUI.name = "2";
+			DFS_GUI.x = 115;
+			DFS_GUI.y = 65;
+			DFS_GUI.name = "2";
 			break;
 		case 3:
-			JavaPaintUI.x = 85;
-			JavaPaintUI.y = 95;
-			JavaPaintUI.name = "3";
+			DFS_GUI.x = 85;
+			DFS_GUI.y = 95;
+			DFS_GUI.name = "3";
 			break;
 		case 4:
-			JavaPaintUI.x = 55;
-			JavaPaintUI.y = 125;
-			JavaPaintUI.name = "4";
+			DFS_GUI.x = 55;
+			DFS_GUI.y = 125;
+			DFS_GUI.name = "4";
 			break;
 		case 5:
-			JavaPaintUI.x = 115;
-			JavaPaintUI.y = 125;
-			JavaPaintUI.name = "5";
+			DFS_GUI.x = 115;
+			DFS_GUI.y = 125;
+			DFS_GUI.name = "5";
 			break;
 		case 6:
-			JavaPaintUI.x = 85;
-			JavaPaintUI.y = 155;
-			JavaPaintUI.name = "6";
+			DFS_GUI.x = 85;
+			DFS_GUI.y = 155;
+			DFS_GUI.name = "6";
 			break;
 		case 7:
-			JavaPaintUI.x = 85;
-			JavaPaintUI.y = 185;
-			JavaPaintUI.name = "7";
+			DFS_GUI.x = 85;
+			DFS_GUI.y = 185;
+			DFS_GUI.name = "7";
 			break;
 		case 8:
-			JavaPaintUI.x = 55;
-			JavaPaintUI.y = 215;
-			JavaPaintUI.name = "8";
+			DFS_GUI.x = 55;
+			DFS_GUI.y = 215;
+			DFS_GUI.name = "8";
 			break;
 		case 9:
-			JavaPaintUI.x = 115;
-			JavaPaintUI.y = 215;
-			JavaPaintUI.name = "9";
+			DFS_GUI.x = 115;
+			DFS_GUI.y = 215;
+			DFS_GUI.name = "9";
 			break;
 		default:
-			JavaPaintUI.x = 0;
-			JavaPaintUI.y = 0;
-			JavaPaintUI.name = "-";
+			DFS_GUI.x = 0;
+			DFS_GUI.y = 0;
+			DFS_GUI.name = "-";
 		}
 	}
 
@@ -185,6 +197,68 @@ class JavaPaintUI extends JFrame {
 	}
 
 	public static void setFile(String file) {
-		JavaPaintUI.file = file;
+		DFS_GUI.file = file;
+	}
+
+	// DFS-Part
+
+	/**
+	 * @param args
+	 */
+	public static void run(String file) {
+		// URL zu Zieldatei
+		String url = file;
+		// Lade Graph der Zieldatei
+		Graph<Vertex, Edge<Vertex>> G = GraphLesen.FileToGraph(url, false);
+
+		readGraph(G);
+
+	}
+
+	private static enum VertexState {
+		White, Gray, Black
+	}
+
+	// liest den Graphen
+	private static void readGraph(Graph G) {
+		// Anzahl der Knoten
+		vertexCount = G.getNumberVertices();
+		graph = G;
+
+		// Setzte alle Vertizes auf Weiﬂ
+		VertexState state[] = new VertexState[vertexCount];
+		for (int i = 0; i < vertexCount; i++) {
+			state[i] = VertexState.White;
+		}
+		loopDFS(0, state);
+	}
+
+	// Iteriert ¸ber den Baum
+	private static void loopDFS(int u, VertexState[] state) {
+		System.out.println(u + " -> ");
+
+		state[u] = VertexState.Gray;
+		for (int v = 0; v < vertexCount; v++) {
+			if (isEdge(u, v) && state[v] == VertexState.White) {
+				loopDFS(v, state);
+			}
+		}
+		state[u] = VertexState.Black;
+	}
+
+	// Schaut ob Punkt u und Punkt v eine Kante haben
+	private static boolean isEdge(int u, int v) {
+		Collection<Vertex> neighbor = graph.getNeighbours(u);
+
+		for (Iterator i = neighbor.iterator(); i.hasNext();) {
+			Vertex x = (Vertex) i.next();
+			if (x.equals(graph.getVertex(v))) {
+				// hier kann die GUI angeschlossen werden
+				// hier wird bei true der Status von Weiﬂ zu Grau zu Schwarz
+				System.out.println(u + " -> " + neighbor + " -> " + v);
+				return true;
+			}
+		}
+		return false;
 	}
 }
