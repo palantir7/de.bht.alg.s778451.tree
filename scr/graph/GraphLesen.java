@@ -29,6 +29,7 @@ public class GraphLesen {
 	 *         dabei in Komponente mit Index 0, Knoten v in Komponente mit Index
 	 *         1 abgelegt.
 	 */
+	@SuppressWarnings("resource")
 	private static int[][] FileToGraphArray(String dat) {
 		int[][] A = null;
 		FileInputStream fis = null;
@@ -97,6 +98,7 @@ public class GraphLesen {
 	 *         Knoten v in Komponente mit Index 1, das Kantengewicht in
 	 *         Komponente mit Index 2 abgelegt.
 	 */
+	@SuppressWarnings("resource")
 	private static int[][] FileToWeightedGraphArray(String dat) {
 		int[][] A = null;
 		FileInputStream fis = null;
@@ -168,11 +170,13 @@ public class GraphLesen {
 	 *            gerichtete Kanten (a,b) und (b,a) dargestellt
 	 * @return der Graph mit Standardgewicht 1 für die Kanten
 	 */
+	@SuppressWarnings("unchecked")
 	public static Graph<Vertex, Edge<Vertex>> FileToGraph(String dat,
 			boolean directed) {
 		int[][] GArray = FileToGraphArray(dat);
 		int n = GArray[0][0];
 		int m = GArray[0][1];
+		@SuppressWarnings("rawtypes")
 		Graph<Vertex, Edge<Vertex>> G = new Graph(n);
 
 		// Knoten hinzufuegen
@@ -217,6 +221,7 @@ public class GraphLesen {
 		int[][] GArray = FileToWeightedGraphArray(dat);
 		int n = GArray[0][0];
 		int m = GArray[0][1];
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		Graph<Vertex, Edge<Vertex>> G = new Graph(n);
 
 		// Knoten hinzufuegen

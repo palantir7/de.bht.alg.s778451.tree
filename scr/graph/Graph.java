@@ -279,6 +279,7 @@ public class Graph<V extends Vertex, E extends Edge<V>> {
 	 *            zu entfernender Knoten
 	 * @return true, g.d.w. Knoten entfernt werden konnte
 	 */
+	@SuppressWarnings("rawtypes")
 	public boolean removeVertex(V v) {
 		// zunächst alle Kanten mit Knoten v als Startknoten entfernen
 		Integer IIndex = vertexIndex.get(v.getId());
@@ -317,6 +318,7 @@ public class Graph<V extends Vertex, E extends Edge<V>> {
 	 *            die zu entfernende Kante
 	 * @return true g.d.w. Kante entfernt werden konnte
 	 */
+	@SuppressWarnings("rawtypes")
 	public boolean removeEdge(E e) {
 		Vertex a = e.getVertexA();
 		Vertex b = e.getVertexB();
