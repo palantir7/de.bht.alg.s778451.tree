@@ -1,16 +1,21 @@
-import graph.Edge;
 import graph.Graph;
-import graph.GraphLesen;
 import graph.Vertex;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 
 class DFS_GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -18,13 +23,10 @@ class DFS_GUI extends JFrame {
 	private JFileChooser fc;
 	int currentX, currentY, oldX, oldY;
 
-	private static int r = 20;
-	private static int x = 0;
-	private static int y = 0;
-	private static String name = null;
 	private static String file = null;
 
 	static int vertexCount;
+	@SuppressWarnings("rawtypes")
 	static Graph graph;
 
 	public DFS_GUI() {
@@ -34,18 +36,16 @@ class DFS_GUI extends JFrame {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			DFS_GUI.setFile(file.getAbsolutePath());
-			// Testausgabe in der Console
-			System.out.println(DFS_GUI.file);
 		}
 
 		initComponents();
 
-		run(DFS_GUI.file);
+		DFS.run(file);
 	}
 
 	private void initComponents() {
 
-		jPanel2 = new Panel2();
+		jPanel2 = new PaintPanel();
 
 		jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 		jPanel2.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -106,89 +106,102 @@ class DFS_GUI extends JFrame {
 
 	private JPanel jPanel2;
 
-	class Panel2 extends JPanel {
+	class PaintPanel extends JPanel {
 		private static final long serialVersionUID = 1L;
 
-		Panel2() {
+		PaintPanel() {
 			// set a preferred size for the custom panel.
 			setPreferredSize(new Dimension(420, 420));
 		}
 
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		@Override
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
+			
+			Graph G = DFS.getGraph();
+			Collection<Vertex> nodes = G.getVertices();
+			int[][] pos = initPos();
 
-			for (int i = 0; i < 10; i++) {
+			// Iteriere ¸ber die nodes
+			for (Iterator i = nodes.iterator(); i.hasNext();) {
+				Vertex node = (Vertex) i.next();
 
-				selectNode(i);
-
-				// die Linien zum verbinden der Nodes fehlt noch
-				// hier die Farbe des Kreises wechseln
-				g.setColor(Color.GRAY);
-				g.fillOval(x, y, r, r);
-				// hier die Farbe des Textes wechseln
-				g.setColor(Color.WHITE);
-				g.drawString(name, x + 7, y + 15);
+				// zeiche nodes
+				drawNode(node.getId(), g, pos);
+				// zeiche edges
+				Collection neighbors = G.getNeighbours(node);
+				for (Iterator n = neighbors.iterator(); n.hasNext();) {
+					Vertex neighbor = (Vertex) n.next();
+					g.drawLine(pos[node.getId()][0] + 5, pos[node.getId()][1] + 5,
+							pos[neighbor.getId()][0] + 5, pos[neighbor.getId()][1] + 5);
+				}
+				// stelle farben aktive da
+				DFS.setPos(pos);
+				DFS.setG(g);
+				DFS.readGraph(G);
 			}
 		}
 	}
 
-	private void selectNode(int number) {
-		switch (number) {
-		case 0:
-			DFS_GUI.x = 85;
-			DFS_GUI.y = 35;
-			DFS_GUI.name = "0";
+	private int[][] initPos() {
+		int[][] pos = new int[10][2];
+		pos[0][0] = 50;
+		pos[0][1] = 25;
+		pos[1][0] = 25;
+		pos[1][1] = 50;
+		pos[2][0] = 50;
+		pos[2][1] = 50;
+		pos[3][0] = 75;
+		pos[3][1] = 50;
+		pos[4][0] = 25;
+		pos[4][1] = 75;
+		pos[5][0] = 50;
+		pos[5][1] = 75;
+		pos[6][0] = 75;
+		pos[6][1] = 75;
+		pos[7][0] = 25;
+		pos[7][1] = 100;
+		pos[8][0] = 50;
+		pos[8][1] = 100;
+		pos[9][0] = 75;
+		pos[9][1] = 100;
+
+		return pos;
+	}
+
+	private void drawNode(int node, Graphics g, int[][] pos) {
+		switch (node) {
+		case (0):
+			g.drawOval(pos[0][0], pos[0][1], 10, 10);
 			break;
-		case 1:
-			DFS_GUI.x = 55;
-			DFS_GUI.y = 65;
-			DFS_GUI.name = "1";
+		case (1):
+			g.drawOval(pos[1][0], pos[1][1], 10, 10);
 			break;
-		case 2:
-			DFS_GUI.x = 115;
-			DFS_GUI.y = 65;
-			DFS_GUI.name = "2";
+		case (2):
+			g.drawOval(pos[2][0], pos[2][1], 10, 10);
 			break;
-		case 3:
-			DFS_GUI.x = 85;
-			DFS_GUI.y = 95;
-			DFS_GUI.name = "3";
+		case (3):
+			g.drawOval(pos[3][0], pos[3][1], 10, 10);
 			break;
-		case 4:
-			DFS_GUI.x = 55;
-			DFS_GUI.y = 125;
-			DFS_GUI.name = "4";
+		case (4):
+			g.drawOval(pos[4][0], pos[4][1], 10, 10);
 			break;
-		case 5:
-			DFS_GUI.x = 115;
-			DFS_GUI.y = 125;
-			DFS_GUI.name = "5";
+		case (5):
+			g.drawOval(pos[5][0], pos[5][1], 10, 10);
 			break;
-		case 6:
-			DFS_GUI.x = 85;
-			DFS_GUI.y = 155;
-			DFS_GUI.name = "6";
+		case (6):
+			g.drawOval(pos[6][0], pos[6][1], 10, 10);
 			break;
-		case 7:
-			DFS_GUI.x = 85;
-			DFS_GUI.y = 185;
-			DFS_GUI.name = "7";
+		case (7):
+			g.drawOval(pos[7][0], pos[7][1], 10, 10);
 			break;
-		case 8:
-			DFS_GUI.x = 55;
-			DFS_GUI.y = 215;
-			DFS_GUI.name = "8";
+		case (8):
+			g.drawOval(pos[8][0], pos[8][1], 10, 10);
 			break;
-		case 9:
-			DFS_GUI.x = 115;
-			DFS_GUI.y = 215;
-			DFS_GUI.name = "9";
+		case (9):
+			g.drawOval(pos[9][0], pos[9][1], 10, 10);
 			break;
-		default:
-			DFS_GUI.x = 0;
-			DFS_GUI.y = 0;
-			DFS_GUI.name = "-";
 		}
 	}
 
@@ -198,67 +211,5 @@ class DFS_GUI extends JFrame {
 
 	public static void setFile(String file) {
 		DFS_GUI.file = file;
-	}
-
-	// DFS-Part
-
-	/**
-	 * @param args
-	 */
-	public static void run(String file) {
-		// URL zu Zieldatei
-		String url = file;
-		// Lade Graph der Zieldatei
-		Graph<Vertex, Edge<Vertex>> G = GraphLesen.FileToGraph(url, false);
-
-		readGraph(G);
-
-	}
-
-	private static enum VertexState {
-		White, Gray, Black
-	}
-
-	// liest den Graphen
-	private static void readGraph(Graph G) {
-		// Anzahl der Knoten
-		vertexCount = G.getNumberVertices();
-		graph = G;
-
-		// Setzte alle Vertizes auf Weiﬂ
-		VertexState state[] = new VertexState[vertexCount];
-		for (int i = 0; i < vertexCount; i++) {
-			state[i] = VertexState.White;
-		}
-		loopDFS(0, state);
-	}
-
-	// Iteriert ¸ber den Baum
-	private static void loopDFS(int u, VertexState[] state) {
-		System.out.println(u + " -> ");
-
-		state[u] = VertexState.Gray;
-		for (int v = 0; v < vertexCount; v++) {
-			if (isEdge(u, v) && state[v] == VertexState.White) {
-				loopDFS(v, state);
-			}
-		}
-		state[u] = VertexState.Black;
-	}
-
-	// Schaut ob Punkt u und Punkt v eine Kante haben
-	private static boolean isEdge(int u, int v) {
-		Collection<Vertex> neighbor = graph.getNeighbours(u);
-
-		for (Iterator i = neighbor.iterator(); i.hasNext();) {
-			Vertex x = (Vertex) i.next();
-			if (x.equals(graph.getVertex(v))) {
-				// hier kann die GUI angeschlossen werden
-				// hier wird bei true der Status von Weiﬂ zu Grau zu Schwarz
-				System.out.println(u + " -> " + neighbor + " -> " + v);
-				return true;
-			}
-		}
-		return false;
 	}
 }

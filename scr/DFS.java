@@ -3,13 +3,18 @@ import graph.Graph;
 import graph.GraphLesen;
 import graph.Vertex;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class DFS {
+public class DFS extends Thread {
 
-	static int vertexCount;
-	static Graph graph;
+	private static int vertexCount;
+	@SuppressWarnings("rawtypes")
+	private static Graph graph;
+	private static Graphics g;
+	private static int[][] pos;
 
 	/**
 	 * @param args
@@ -20,9 +25,9 @@ public class DFS {
 		String url = file;
 		// Lade Graph der Zieldatei
 		Graph<Vertex, Edge<Vertex>> G = GraphLesen.FileToGraph(url, false);
-
-		readGraph(G);
-
+		DFS.graph = G;
+		
+		//readGraph(G);
 	}
 
 	private static enum VertexState {
@@ -30,10 +35,9 @@ public class DFS {
 	}
 
 	// liest den Graphen
-	private static void readGraph(Graph G) {
+	public static void readGraph(@SuppressWarnings("rawtypes") Graph G) {
 		// Anzahl der Knoten
 		vertexCount = G.getNumberVertices();
-		graph = G;
 
 		// Setzte alle Vertizes auf Weiß
 		VertexState state[] = new VertexState[vertexCount];
@@ -45,31 +49,57 @@ public class DFS {
 
 	// Iteriert über den Baum
 	private static void loopDFS(int u, VertexState[] state) {
-		System.out.println(u + " -> ");
-
 		state[u] = VertexState.Gray;
+		g.setColor(Color.GRAY);
+		g.fillOval(pos[u][0], pos[u][1], 10, 10);
+		
 		for (int v = 0; v < vertexCount; v++) {
 			if (isEdge(u, v) && state[v] == VertexState.White) {
 				loopDFS(v, state);
 			}
 		}
 		state[u] = VertexState.Black;
+		g.setColor(Color.BLACK);
+		g.fillOval(pos[u][0], pos[u][1], 10, 10);
 	}
 
 	// Schaut ob Punkt u und Punkt v eine Kante haben
 	private static boolean isEdge(int u, int v) {
+		@SuppressWarnings("unchecked")
 		Collection<Vertex> neighbor = graph.getNeighbours(u);
 
-		for (Iterator i = neighbor.iterator(); i.hasNext();) {
+		for (@SuppressWarnings("rawtypes")
+		Iterator i = neighbor.iterator(); i.hasNext();) {
 			Vertex x = (Vertex) i.next();
 			if (x.equals(graph.getVertex(v))) {
 				// hier kann die GUI angeschlossen werden
 				// hier wird bei true der Status von Weiß zu Grau zu Schwarz
-				System.out.println(u + " -> " + neighbor + " -> " + v);
+				//System.out.println(u + " -> " + neighbor + " -> " + v);
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static Graph getGraph() {
+		return graph;
+	}
+
+	public static int[][] getPos() {
+		return pos;
+	}
+
+	public static void setPos(int[][] pos) {
+		DFS.pos = pos;
+	}
+	
+	public static Graphics getG() {
+		return g;
+	}
+
+	public static void setG(Graphics g) {
+		DFS.g = g;
 	}
 
 }
