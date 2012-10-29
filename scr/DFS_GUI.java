@@ -29,8 +29,11 @@ class DFS_GUI extends JFrame {
 	@SuppressWarnings("rawtypes")
 	static Graph graph;
 
+	/**
+	 * Constructor DFS_GUI.java
+	 */
 	public DFS_GUI() {
-		fc = new JFileChooser();
+		fc = new JFileChooser(new File("D:\\SVN\\LAN-HDDs\\ALG\\de.bht.alg.s778451.tree\\scr\\dat"));
 		int returnVal = fc.showOpenDialog(DFS_GUI.this);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -43,6 +46,9 @@ class DFS_GUI extends JFrame {
 		DFS.run(file);
 	}
 
+	/**
+	 * initComponents()
+	 */
 	private void initComponents() {
 
 		jPanel2 = new PaintPanel();
@@ -70,6 +76,10 @@ class DFS_GUI extends JFrame {
 		pack();
 	}
 
+	/**
+	 * MouseDragger
+	 * @param evt Mouse-Event
+	 */
 	private void jPanel2MouseDragged(MouseEvent evt) {
 		if (tool == 1) {
 			currentX = evt.getX();
@@ -81,13 +91,20 @@ class DFS_GUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Pressed Mouse
+	 * @param evt Mouse-Event
+	 */
 	private void jPanel2MousePressed(MouseEvent evt) {
 		oldX = evt.getX();
 		oldY = evt.getY();
 		System.out.println(oldX + " " + oldY);
 	}
 
-	// mouse released//
+	/**
+	 * mouse released
+	 * @param evt Mouse-Event
+	 */
 	private void jPanel2MouseReleased(MouseEvent evt) {
 		if (tool == 2) {
 			currentX = evt.getX();
@@ -96,6 +113,10 @@ class DFS_GUI extends JFrame {
 		}
 	}
 
+	/**
+	 * main-Methode
+	 * @param args nothing
+	 */
 	public static void main(String args[]) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -106,6 +127,13 @@ class DFS_GUI extends JFrame {
 
 	private JPanel jPanel2;
 
+	/**
+	 * @author Marcel Buchmann (s778451)
+	 * @email marcel.buchmann(- at -)googlemail.com
+	 * @version 1.0.0
+	 * @date 29.10.2012
+	 * @project de.bht.alg.s778451.tree
+	 */
 	class PaintPanel extends JPanel {
 		private static final long serialVersionUID = 1L;
 
@@ -114,11 +142,14 @@ class DFS_GUI extends JFrame {
 			setPreferredSize(new Dimension(420, 420));
 		}
 
+		/**
+		 * paintComponent
+		 */
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		@Override
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			
+
 			Graph G = DFS.getGraph();
 			Collection<Vertex> nodes = G.getVertices();
 			int[][] pos = initPos();
@@ -133,17 +164,23 @@ class DFS_GUI extends JFrame {
 				Collection neighbors = G.getNeighbours(node);
 				for (Iterator n = neighbors.iterator(); n.hasNext();) {
 					Vertex neighbor = (Vertex) n.next();
-					g.drawLine(pos[node.getId()][0] + 5, pos[node.getId()][1] + 5,
-							pos[neighbor.getId()][0] + 5, pos[neighbor.getId()][1] + 5);
+					g.drawLine(pos[node.getId()][0] + 5,
+							pos[node.getId()][1] + 5,
+							pos[neighbor.getId()][0] + 5,
+							pos[neighbor.getId()][1] + 5);
 				}
 				// stelle farben aktive da
 				DFS.setPos(pos);
 				DFS.setG(g);
-				DFS.readGraph(G);
+				DFS.readGraph(G, 0);
 			}
 		}
 	}
 
+	/**
+	 * Position Array of Nodes
+	 * @return Position-Array
+	 */
 	private int[][] initPos() {
 		int[][] pos = new int[10][2];
 		pos[0][0] = 50;
@@ -170,45 +207,59 @@ class DFS_GUI extends JFrame {
 		return pos;
 	}
 
+	/**
+	 * drawing Nodes
+	 * @param node the Node-ID
+	 * @param g Graphics-Area
+	 * @param pos Position-Array of Nodes
+	 */
 	private void drawNode(int node, Graphics g, int[][] pos) {
 		switch (node) {
-		case (0):
-			g.drawOval(pos[0][0], pos[0][1], 10, 10);
-			break;
-		case (1):
-			g.drawOval(pos[1][0], pos[1][1], 10, 10);
-			break;
-		case (2):
-			g.drawOval(pos[2][0], pos[2][1], 10, 10);
-			break;
-		case (3):
-			g.drawOval(pos[3][0], pos[3][1], 10, 10);
-			break;
-		case (4):
-			g.drawOval(pos[4][0], pos[4][1], 10, 10);
-			break;
-		case (5):
-			g.drawOval(pos[5][0], pos[5][1], 10, 10);
-			break;
-		case (6):
-			g.drawOval(pos[6][0], pos[6][1], 10, 10);
-			break;
-		case (7):
-			g.drawOval(pos[7][0], pos[7][1], 10, 10);
-			break;
-		case (8):
-			g.drawOval(pos[8][0], pos[8][1], 10, 10);
-			break;
-		case (9):
-			g.drawOval(pos[9][0], pos[9][1], 10, 10);
-			break;
+			case (0):
+				g.drawOval(pos[0][0], pos[0][1], 10, 10);
+				break;
+			case (1):
+				g.drawOval(pos[1][0], pos[1][1], 10, 10);
+				break;
+			case (2):
+				g.drawOval(pos[2][0], pos[2][1], 10, 10);
+				break;
+			case (3):
+				g.drawOval(pos[3][0], pos[3][1], 10, 10);
+				break;
+			case (4):
+				g.drawOval(pos[4][0], pos[4][1], 10, 10);
+				break;
+			case (5):
+				g.drawOval(pos[5][0], pos[5][1], 10, 10);
+				break;
+			case (6):
+				g.drawOval(pos[6][0], pos[6][1], 10, 10);
+				break;
+			case (7):
+				g.drawOval(pos[7][0], pos[7][1], 10, 10);
+				break;
+			case (8):
+				g.drawOval(pos[8][0], pos[8][1], 10, 10);
+				break;
+			case (9):
+				g.drawOval(pos[9][0], pos[9][1], 10, 10);
+				break;
 		}
 	}
 
+	/**
+	 * File Getter
+	 * @return file
+	 */
 	public static String getFile() {
 		return file;
 	}
 
+	/**
+	 * File Setter
+	 * @param file
+	 */
 	public static void setFile(String file) {
 		DFS_GUI.file = file;
 	}
