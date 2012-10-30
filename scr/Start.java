@@ -1,10 +1,14 @@
+import java.awt.EventQueue;
+import java.io.File;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 
 import paint.PaintPanel;
-
-/**
- * 
- */
 
 /**
  * @author Marcel Buchmann (s778451)
@@ -14,24 +18,64 @@ import paint.PaintPanel;
  * @project de.bht.alg.s778451.tree
  * 
  */
-public class Start {
+class Start extends JFrame {
 
 	/**
-	 * global buffer of paint-elements lines 999, rows 10 
-	 * (type, name, x, y, to x, to y, color)
+	 * serialVersionUID
 	 */
-	private static String[][] buffer = new String[999][10];
-	private static JPanel paintPanel = new PaintPanel();
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * @param args
+	 * global buffer of paint-elements lines 999, rows 10 (type, x, y, to x, to
+	 * y, color, text)
 	 */
-	public static void main(String[] args) {
-		((PaintPanel) paintPanel).setElementBuffer(buffer);
-		// TODO Auto-generated method stub
-		// Starte MainGUI (Algo-Auswahl)
-		
-		// Übergib Zeichenfläche an MainGUI
+	@SuppressWarnings("unused")
+	private static String[] element = new String[10];
+	@SuppressWarnings("rawtypes")
+	private static List buffer;
+	@SuppressWarnings("unused")
+	private static JPanel paintPanel;
+	private JFileChooser fc;
+	@SuppressWarnings("unused")
+	private String file;
+	private JPanel panel;
+
+	/**
+	 * 
+	 */
+	public Start() {
+		initComponents();
+		loadFile();		
+	}
+
+	/**
+	 * main-Methode
+	 * @param args not in use!!!
+	 */
+	public static void main(String args[]) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				JFrame frame = new Start();
+				frame.setName("PaintPanel");
+		        frame.setSize(500, 300);
+			}
+		});
+	}
+
+	/**
+	 * initComponents()
+	 */
+	private void initComponents() {
+		panel = new PaintPanel();
+		paintPanel = panel;
+
+		panel.setBackground(new java.awt.Color(255, 255, 255));
+		panel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+
+		this.setContentPane(panel);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
+		pack();
 	}
 
 	/**
@@ -39,7 +83,8 @@ public class Start {
 	 * 
 	 * @return buffer
 	 */
-	public static String[][] getBuffer() {
+	@SuppressWarnings("rawtypes")
+	public static List getBuffer() {
 		return buffer;
 	}
 
@@ -49,8 +94,22 @@ public class Start {
 	 * @param buffer
 	 *            2 dimensional String (String[999][10])
 	 */
-	public static void setBuffer(String[][] buffer) {
+	@SuppressWarnings("rawtypes")
+	public static void setBuffer(List buffer) {
 		Start.buffer = buffer;
 	}
 
+	/**
+	 * load a file
+	 */
+	public void loadFile() {
+		fc = new JFileChooser(new File(
+				"D:\\SVN\\LAN-HDDs\\ALG\\de.bht.alg.s778451.tree\\scr\\dat"));
+		int returnVal = fc.showOpenDialog(Start.this);
+
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File f = fc.getSelectedFile();
+			this.file = f.getAbsolutePath();
+		}
+	}
 }
