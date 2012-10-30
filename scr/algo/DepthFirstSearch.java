@@ -19,7 +19,7 @@ public class DepthFirstSearch extends Thread {
 	
 	/**
 	 * Mainmethode - ONLY for Tests
-	 * @param args
+	 * @param args not in use !!!
 	 */
 	public static void main(String[] args) {
 		String file = "D:\\SVN\\LAN-HDDs\\ALG\\de.bht.alg.s778451.tree\\scr\\dat\\graph20.txt";
