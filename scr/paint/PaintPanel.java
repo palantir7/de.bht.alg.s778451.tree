@@ -28,7 +28,7 @@ public class PaintPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static String[] element = new String[10];
-	private static Graphics graphic;
+	private static Graphics graphic;	
 	@SuppressWarnings("rawtypes")
 	private List elementBuffer = new ArrayList();
 
@@ -43,23 +43,21 @@ public class PaintPanel extends JPanel {
 	 * Initialization of PaintArea
 	 */
 	private void initPaintArea() {
-		setPreferredSize(new Dimension(500, 300));
-
-		// Test
-		this.addNode(15, 30, "GRAY");
-		this.addEdge(20, 35, 20, 55, "WHITE");
-		this.addText(30, 40, "Test...", "GRAY");
+		setPreferredSize(new Dimension(1000, 600));
+	}
+	
+	public void updateArea() {
+		repaintPanel();
 	}
 
 	/**
 	 * Paint now ...
 	 */
-	@SuppressWarnings("static-access")
+	@SuppressWarnings({ "static-access", "rawtypes" })
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		this.setGraphic(g);
 		
-		@SuppressWarnings("rawtypes")
 		Iterator itr = elementBuffer.iterator();
 
 		// mini-parser
@@ -82,6 +80,14 @@ public class PaintPanel extends JPanel {
 						.println("Error on Paint ... Element not definied ...");
 			}
 		}
+		
+	}
+
+	/**
+	 * update PaintPanel
+	 */
+	public void repaintPanel() {
+		
 	}
 
 	// ---------- Draw-Methodes ---------->>>
@@ -108,7 +114,6 @@ public class PaintPanel extends JPanel {
 			getGraphic().setColor(Color.BLACK);
 			getGraphic().drawOval(x, y, 10, 10);
 		}
-		System.out.println("Node ->" + color);
 	}
 
 	/**
@@ -131,7 +136,6 @@ public class PaintPanel extends JPanel {
 			getGraphic().setColor(Color.WHITE);
 			getGraphic().drawLine(x + 5, y + 5, toX + 5, toY + 5);
 		}
-		System.out.println("Edge ->" + color);
 	}
 
 	/**
@@ -161,13 +165,13 @@ public class PaintPanel extends JPanel {
 			getGraphic().setColor(Color.WHITE);
 			getGraphic().drawString(text, x, y);
 		}
-		System.out.println("Text ->" + color);
 	}
 
 	// ---------- Getter/Setter-Methodes ---------->>>
 
 	/**
 	 * Gets the Element-Buffer
+	 * 
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
@@ -177,25 +181,26 @@ public class PaintPanel extends JPanel {
 
 	/**
 	 * Sets the Element-Buffer
+	 * 
 	 * @param buffer
 	 */
 	@SuppressWarnings("rawtypes")
 	public void setElementBuffer(List buffer) {
 		this.elementBuffer = buffer;
-
 	}
 
-	
 	/**
 	 * Getter of Graphics
+	 * 
 	 * @return @Graphics
 	 */
 	public static Graphics getGraphic() {
 		return graphic;
 	}
-	
+
 	/**
 	 * Setter of Graphics
+	 * 
 	 * @param graphic
 	 */
 
@@ -213,9 +218,37 @@ public class PaintPanel extends JPanel {
 	 * @param color
 	 */
 	@SuppressWarnings("unchecked")
-	public void addNode(int x, int y, String color) {
+	public void addNode(int x, int y, String color, int id) {
 		element = new String[] { "Node", "" + x, "" + y, null, null,
-				color.toString(), null };
+				color.toString(), null, "" + id };
+		elementBuffer.add(element);
+	}
+
+	/**
+	 * Update a Node
+	 * 
+	 * @param x
+	 * @param y
+	 * @param color
+	 * @param id
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void updateNode(int x, int y, String color, int id) {
+		int i = 0;
+		List tempList = new ArrayList(elementBuffer);
+		Iterator itr = tempList.iterator();
+		
+		// mini-parser
+		while (itr.hasNext()) {
+			element = (String[]) itr.next();
+			if (element[0].equals("Node") && element[7].equals("" + id)) {
+				System.out.println(element[7] + " - " + id);
+			    elementBuffer.remove(i);
+			}
+			i++;
+		}
+		element = new String[] { "Node", "" + x, "" + y, null, null,
+				color.toString(), null, "" + id };
 		elementBuffer.add(element);
 	}
 
@@ -229,9 +262,38 @@ public class PaintPanel extends JPanel {
 	 * @param color
 	 */
 	@SuppressWarnings("unchecked")
-	public void addEdge(int x, int y, int toX, int toY, String color) {
+	public void addEdge(int x, int y, int toX, int toY, String color, int id) {
 		element = new String[] { "Edge", "" + x, "" + y, "" + toX, "" + toY,
-				color.toString(), null };
+				color.toString(), null, "" + id };
+		elementBuffer.add(element);
+	}
+
+	/**
+	 * Update a Edge
+	 * @param x
+	 * @param y
+	 * @param toX
+	 * @param toY
+	 * @param color
+	 * @param id
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void updateEdge(int x, int y, int toX, int toY, String color, int id) {
+		int i = 0;
+		List tempList = new ArrayList(elementBuffer);
+		Iterator itr = tempList.iterator();
+		
+		// mini-parser
+		while (itr.hasNext()) {
+			element = (String[]) itr.next();
+			if (element[0].equals("Edge") && element[7].equals("" + id)) {
+				System.out.println(element[7] + " - " + id);
+				elementBuffer.remove(i);
+			}
+			i++;
+		}
+		element = new String[] { "Edge", "" + x, "" + y, "" + toX, "" + toY,
+				color.toString(), null, "" + id };
 		elementBuffer.add(element);
 	}
 
@@ -244,9 +306,37 @@ public class PaintPanel extends JPanel {
 	 * @param color
 	 */
 	@SuppressWarnings("unchecked")
-	public void addText(int x, int y, String text, String color) {
+	public void addText(int x, int y, String text, String color, int id) {
 		element = new String[] { "Text", "" + x, "" + y, null, null,
-				color.toString(), text };
+				color.toString(), text, "" + id };
+		elementBuffer.add(element);
+	}
+
+	/**
+	 * Update a Text
+	 * @param x
+	 * @param y
+	 * @param text
+	 * @param color
+	 * @param id
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void updateText(int x, int y, String text, String color, int id) {
+		int i = 0;
+		List tempList = new ArrayList(elementBuffer);
+		Iterator itr = tempList.iterator();
+		
+		// mini-parser
+		while (itr.hasNext()) {
+			element = (String[]) itr.next();
+			if (element[0].equals("Text") && element[7].equals("" + id)) {
+				System.out.println(element[7] + " - " + id);
+				elementBuffer.remove(i);
+			}
+			i++;
+		}
+		element = new String[] { "Text", "" + x, "" + y, null, null,
+				color.toString(), text, "" + id };
 		elementBuffer.add(element);
 	}
 }

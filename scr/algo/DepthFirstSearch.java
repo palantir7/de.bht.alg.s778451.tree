@@ -17,12 +17,15 @@ public class DepthFirstSearch extends Thread {
 	private static int[][] pos;
 	private static int vertexCount;
 	
+	private static int x;
+	private static int y;
+	
 	/**
 	 * Mainmethode - ONLY for Tests
 	 * @param args not in use !!!
 	 */
 	public static void main(String[] args) {
-		String file = "D:\\SVN\\LAN-HDDs\\ALG\\de.bht.alg.s778451.tree\\scr\\dat\\graph20.txt";
+		String file = "F:\\GitHub\\de.bht.alg.s778451.tree\\scr\\dat\\graph20.txt";
 		DepthFirstSearch.run(file);
 	}
 

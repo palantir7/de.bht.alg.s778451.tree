@@ -1,11 +1,14 @@
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.io.File;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SpringLayout;
 import javax.swing.border.BevelBorder;
 
 import paint.PaintPanel;
@@ -34,7 +37,10 @@ class Start extends JFrame {
 	@SuppressWarnings("rawtypes")
 	private static List buffer;
 	@SuppressWarnings("unused")
+	private static JPanel mainPanel;
 	private static JPanel paintPanel;
+	private static JPanel iPanel;
+	private static JButton button1;
 	private JFileChooser fc;
 	@SuppressWarnings("unused")
 	private String file;
@@ -56,8 +62,10 @@ class Start extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				JFrame frame = new Start();
-				frame.setName("PaintPanel");
-		        frame.setSize(500, 300);
+		        frame.setLayout(new BorderLayout());
+				frame.setTitle("ALGO - TreeViewer");
+		        frame.setSize(600, 350);
+		        mainPanel = new JPanel();
 			}
 		});
 	}
@@ -66,16 +74,27 @@ class Start extends JFrame {
 	 * initComponents()
 	 */
 	private void initComponents() {
+		
 		panel = new PaintPanel();
 		paintPanel = panel;
+		iPanel = new JPanel();
 
 		panel.setBackground(new java.awt.Color(255, 255, 255));
 		panel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+		
+		button1 = new JButton("Submit");
 
-		this.setContentPane(panel);
+		iPanel.setSize(50, 600);
+		iPanel.setBackground(new java.awt.Color(255, 255, 255));
+		iPanel.add(button1);
+
+		this.getContentPane().add(panel, BorderLayout.CENTER);
+		this.getContentPane().add(iPanel , BorderLayout.WEST);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		pack();
+		
+		((PaintPanel) paintPanel).updateArea();
 	}
 
 	/**
