@@ -1,5 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
@@ -8,8 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SpringLayout;
 import javax.swing.border.BevelBorder;
+
+import algo.DepthFirstSearch;
 
 import paint.PaintPanel;
 
@@ -21,7 +25,7 @@ import paint.PaintPanel;
  * @project de.bht.alg.s778451.tree
  * 
  */
-class Start extends JFrame {
+class Start extends JFrame implements ActionListener {
 
 	/**
 	 * serialVersionUID
@@ -32,40 +36,46 @@ class Start extends JFrame {
 	 * global buffer of paint-elements lines 999, rows 10 (type, x, y, to x, to
 	 * y, color, text)
 	 */
-	@SuppressWarnings("unused")
-	private static String[] element = new String[10];
 	@SuppressWarnings("rawtypes")
 	private static List buffer;
+	@SuppressWarnings("unused")
+	private static String[] element = new String[10];
+	private static JButton button1;
+	private static JButton button2;
+	private static JButton button3;
+	private static JButton button4;
+	private static JButton button5;
 	@SuppressWarnings("unused")
 	private static JPanel mainPanel;
 	private static JPanel paintPanel;
 	private static JPanel iPanel;
-	private static JButton button1;
 	private JFileChooser fc;
-	@SuppressWarnings("unused")
-	private String file;
-	private JPanel panel;
+	private String file = null;
 
 	/**
 	 * 
 	 */
 	public Start() {
 		initComponents();
-		loadFile();		
+
+		((PaintPanel) paintPanel).addText("Welcome ... ", "BLACK", 99);
+		paintPanel.updateUI();
 	}
 
 	/**
 	 * main-Methode
-	 * @param args not in use!!!
+	 * 
+	 * @param args
+	 *            not in use!!!
 	 */
 	public static void main(String args[]) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				JFrame frame = new Start();
-		        frame.setLayout(new BorderLayout());
+				frame.setLayout(new BorderLayout());
 				frame.setTitle("ALGO - TreeViewer");
-		        frame.setSize(600, 350);
-		        mainPanel = new JPanel();
+				frame.setSize(680, 390);
+				mainPanel = new JPanel();
 			}
 		});
 	}
@@ -74,26 +84,43 @@ class Start extends JFrame {
 	 * initComponents()
 	 */
 	private void initComponents() {
-		
-		panel = new PaintPanel();
-		paintPanel = panel;
+
+		// paint panel
+		paintPanel = new PaintPanel();
+		paintPanel.setBackground(new java.awt.Color(255, 255, 255));
+		paintPanel.setBorder(BorderFactory
+				.createBevelBorder(BevelBorder.RAISED));
+
+		// interaction panel
 		iPanel = new JPanel();
-
-		panel.setBackground(new java.awt.Color(255, 255, 255));
-		panel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		
-		button1 = new JButton("Submit");
-
-		iPanel.setSize(50, 600);
+		iPanel.setSize(50, 350);
+		iPanel.setLayout(new GridLayout(0, 1));
 		iPanel.setBackground(new java.awt.Color(255, 255, 255));
-		iPanel.add(button1);
 
-		this.getContentPane().add(panel, BorderLayout.CENTER);
-		this.getContentPane().add(iPanel , BorderLayout.WEST);
+		// buttons of iPanel
+		button1 = new JButton("Load a File");
+		button1.addActionListener(this);
+		iPanel.add(button1);
+		button2 = new JButton("DFS - Algo");
+		button2.addActionListener(this);
+		iPanel.add(button2);
+		button3 = new JButton("BFS - Algo");
+		button3.addActionListener(this);
+		iPanel.add(button3);
+		button4 = new JButton("Djiska - Algo");
+		button4.addActionListener(this);
+		iPanel.add(button4);
+		button5 = new JButton("Kruskal - Algo");
+		button5.addActionListener(this);
+		iPanel.add(button5);
+
+		// add panels to mainframe
+		this.getContentPane().add(paintPanel, BorderLayout.CENTER);
+		this.getContentPane().add(iPanel, BorderLayout.WEST);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		pack();
-		
+
 		((PaintPanel) paintPanel).updateArea();
 	}
 
@@ -129,6 +156,53 @@ class Start extends JFrame {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File f = fc.getSelectedFile();
 			this.file = f.getAbsolutePath();
+		} else {
+			this.file = null;
+		}
+	}
+
+	/**
+	 * Override actionPerformed
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == button1) {
+			this.loadFile();
+			((PaintPanel) paintPanel).updateText(10, 15, "File: " + this.file,
+					"GRAY", 99);
+		} else if (e.getSource() == button2) {
+			if (this.file != null) {
+				DepthFirstSearch.run(this.file, (PaintPanel) paintPanel);
+				((PaintPanel) paintPanel).updateText(10, 15, "DFS-Algo",
+						"GRAY", 99);
+			} else {
+				((PaintPanel) paintPanel).updateText(10, 15,
+						"Keine Datei gewählt!", "BLACK", 99);
+			}
+		} else if (e.getSource() == button3) {
+			if (this.file != null) {
+				// TODO: Fill me ...
+			} else {
+				((PaintPanel) paintPanel).updateText(10, 15,
+						"Keine Datei gewählt!", "BLACK", 99);
+			}
+		} else if (e.getSource() == button4) {
+			if (this.file != null) {
+				// TODO: Fill me ...
+			} else {
+				((PaintPanel) paintPanel).updateText(10, 15,
+						"Keine Datei gewählt!", "BLACK", 99);
+			}
+		} else if (e.getSource() == button5) {
+			if (this.file != null) {
+				// TODO: Fill me ...
+			} else {
+				((PaintPanel) paintPanel).updateText(10, 15,
+						"Keine Datei gewählt!", "BLACK", 99);
+			}
+		} else {
+			((PaintPanel) paintPanel).updateText(10, 15,
+					"Es ist ein Fehler aufgetreten!", "BLACK", 99);
 		}
 	}
 }

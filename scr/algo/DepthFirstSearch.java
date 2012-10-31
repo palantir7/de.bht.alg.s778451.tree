@@ -5,29 +5,18 @@ import graph.Graph;
 import graph.GraphLesen;
 import graph.Vertex;
 
-import java.awt.Graphics;
 import java.util.Collection;
 import java.util.Iterator;
+
+import paint.PaintPanel;
 
 public class DepthFirstSearch extends Thread {
 
 	@SuppressWarnings("rawtypes")
 	private static Graph graph;
-	private static Graphics graphics;
+	private static PaintPanel paintArea;
 	private static int[][] pos;
 	private static int vertexCount;
-	
-	private static int x;
-	private static int y;
-	
-	/**
-	 * Mainmethode - ONLY for Tests
-	 * @param args not in use !!!
-	 */
-	public static void main(String[] args) {
-		String file = "F:\\GitHub\\de.bht.alg.s778451.tree\\scr\\dat\\graph20.txt";
-		DepthFirstSearch.run(file);
-	}
 
 	/**
 	 * Running (Initialization)
@@ -35,7 +24,9 @@ public class DepthFirstSearch extends Thread {
 	 * @param args
 	 *            Filepath as String
 	 */
-	public static void run(String file) {
+	public static void run(String file, PaintPanel panel) {
+		// Set PaintPanel
+		paintArea = panel;
 		// URL to Targetfile
 		String url = file;
 		// Generate Graph of Targetfile
@@ -67,12 +58,9 @@ public class DepthFirstSearch extends Thread {
 		// Set all Vertices to WHITE
 		VertexState state[] = new VertexState[vertexCount];
 		for (int i = 0; i < vertexCount; i++) {
-			state[i] = VertexState.WHITE;
-			
-			// Control-Output of Console
-			System.out.println("Node: " + i + " -> " + state[i].toString());
-			// g.setColor(Color.WHITE);
-			// g.fillOval(pos[i][0], pos[i][1], 10, 10);
+			state[i] = VertexState.WHITE;			
+			((PaintPanel) paintArea).addNode("WHITE", i);
+			((PaintPanel) paintArea).updateArea();
 		}
 		loopDFS(startNode, state);
 	}
@@ -86,24 +74,18 @@ public class DepthFirstSearch extends Thread {
 	 *            Color of Node (State)
 	 */
 	private static void loopDFS(int u, VertexState[] state) {
-		state[u] = VertexState.GRAY;
-
-		// Control-Output of Console
-		System.out.println("Node: " + u + " -> " + state[u].toString());
-		// g.setColor(Color.GRAY);
-		// g.fillOval(pos[u][0], pos[u][1], 10, 10);
+		state[u] = VertexState.GRAY;		
+		((PaintPanel) paintArea).updateNode("GRAY", u);
+		((PaintPanel) paintArea).updateArea();
 
 		for (int v = 0; v < vertexCount; v++) {
 			if (isEdge(u, v) && state[v] == VertexState.WHITE) {
 				loopDFS(v, state);
 			}
 		}
-		state[u] = VertexState.BLACK;
-		
-		// Control-Output of Console
-		System.out.println("Node: " + u + " -> " + state[u].toString());
-		// g.setColor(Color.BLACK);
-		// g.fillOval(pos[u][0], pos[u][1], 10, 10);
+		state[u] = VertexState.BLACK;		
+		((PaintPanel) paintArea).updateNode("BLACK", u);
+		((PaintPanel) paintArea).updateArea();
 	}
 
 	/**
@@ -123,16 +105,15 @@ public class DepthFirstSearch extends Thread {
 		Iterator i = neighbor.iterator(); i.hasNext();) {
 			Vertex x = (Vertex) i.next();
 			if (x.equals(graph.getVertex(v))) {
-				// hier kann die GUI angeschlossen werden
-				// hier wird bei true der Status von Weiß zu Grau zu Schwarz
-
-				// gibt die daten in der console aus
-				// System.out.println("looking from " + u + " -- to --> " + v);
+				((PaintPanel) paintArea).addEdge("GRAY", u, v);
+				((PaintPanel) paintArea).updateArea();
 				return true;
 			}
 		}
 		return false;
 	}
+	
+	//---------- Getten & Setter ---------->>>
 
 	/**
 	 * Graph Getter
@@ -173,24 +154,4 @@ public class DepthFirstSearch extends Thread {
 	public static void setPos(int[][] pos) {
 		DepthFirstSearch.pos = pos;
 	}
-
-	/**
-	 * Graphics Getter
-	 * 
-	 * @return @Graphics
-	 */
-	public static Graphics getG() {
-		return graphics;
-	}
-
-	/**
-	 * Graphics Setter
-	 * 
-	 * @param g
-	 *            @Graphics
-	 */
-	public static void setG(Graphics g) {
-		DepthFirstSearch.graphics = g;
-	}
-
 }
