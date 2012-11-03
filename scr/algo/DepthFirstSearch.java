@@ -102,7 +102,7 @@ public class DepthFirstSearch extends Thread {
 		Iterator i = neighbor.iterator(); i.hasNext();) {
 			Vertex x = (Vertex) i.next();
 			if (x.equals(graph.getVertex(v))) {
-				((PaintPanel) paintArea).addEdge("GRAY", u, v);
+				((PaintPanel) paintArea).addEdge("RED", u, v);
 				return true;
 			}
 		}

@@ -80,13 +80,14 @@ public class PaintPanel extends JPanel {
 		this.setGraphic(g);
 
 		if (isStatus() == true) {
+			//TODO: Timer
 			int mod = count % 1000;
 			if (mod == 0) {
 				if (frame < elementBuffer.size()) {
-					//System.out.println(getElement(frame));					
+					// System.out.println(getElement(frame));
 					frame++;
 				} else {
-					//frame = 0;
+					// frame = 0;
 				}
 			}
 		}
@@ -99,13 +100,15 @@ public class PaintPanel extends JPanel {
 						Integer.parseInt(element[2]), element[5]);
 			} else if (element[0].equals("Edge")) {
 				this.drawEdge(Integer.parseInt(element[1]),
-						Integer.parseInt(element[2]), Integer.parseInt(element[3]),
+						Integer.parseInt(element[2]),
+						Integer.parseInt(element[3]),
 						Integer.parseInt(element[4]), element[5]);
 			} else if (element[0].equals("Text")) {
 				this.drawText(Integer.parseInt(element[1]),
 						Integer.parseInt(element[2]), element[6], element[5]);
 			} else {
-				System.out.println("Error on Paint ... Element not definied ...");
+				System.out
+						.println("Error on Paint ... Element not definied ...");
 			}
 		}
 
@@ -115,10 +118,14 @@ public class PaintPanel extends JPanel {
 
 	@SuppressWarnings("rawtypes")
 	private String[] getElement(int index) {
-		Iterator itr = elementBuffer.iterator();
-		while (index > 0) {
-			element = (String[]) itr.next();
-			index--;
+		try {
+			Iterator itr = elementBuffer.iterator();
+			while (index > 0) {
+				element = (String[]) itr.next();
+				index--;
+			}
+		} catch (Exception e) {
+			// do nothing
 		}
 		return element;
 	}
@@ -162,12 +169,67 @@ public class PaintPanel extends JPanel {
 		if (color.equals("BLACK")) {
 			getGraphic().setColor(Color.BLACK);
 			getGraphic().drawLine(x + 5, y + 5, toX + 5, toY + 5);
+			getArrow(x, y, toX, toY);
 		} else if (color.equals("GRAY")) {
 			getGraphic().setColor(Color.GRAY);
 			getGraphic().drawLine(x + 5, y + 5, toX + 5, toY + 5);
+			getArrow(x, y, toX, toY);
+		} else if (color.equals("RED")) {
+			getGraphic().setColor(Color.RED);
+			getGraphic().drawLine(x + 5, y + 5, toX + 5, toY + 5);
+			getArrow(x, y, toX, toY);
 		} else {
 			getGraphic().setColor(Color.WHITE);
 			getGraphic().drawLine(x + 5, y + 5, toX + 5, toY + 5);
+			getArrow(x, y, toX, toY);
+		}
+	}
+	
+	private void getArrow(int x, int y, int toX, int toY) {
+		// orientation of arrow
+		int o1 = x - toX;
+		int o2 = y - toY;
+		
+		if (o1 > 0 && o2 < 0)  { 
+			// x+ y+
+			int[] xPoints = {toX + 15, toX + 10, toX + 17};
+			int[] yPoints = {toY - 2, toY + 3, toY + 3};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 < 0 && o2 < 0) { 
+			// x+ y+
+			int[] xPoints = {toX - 5, toX, toX - 7};
+			int[] yPoints = {toY - 3, toY + 2, toY + 2};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 < 0 && o2 > 0) { 
+			// x+ y+
+			int[] xPoints = {toX - 5, toX, toX - 7};
+			int[] yPoints = {toY + 13, toY + 8, toY + 8};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 > 0 && o2 > 0) { 
+			// x+ y+
+			int[] xPoints = {toX + 15, toX + 10, toX + 17};
+			int[] yPoints = {toY + 13, toY + 8, toY + 8};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 > 0 && o2 == 0) { 
+			// x+ y+
+			int[] xPoints = {toX + 10, toX + 15, toX + 15};
+			int[] yPoints = {toY + 5, toY + 2, toY + 7};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 < 0 && o2 == 0) { 
+			// x+ y+
+			int[] xPoints = {toX, toX - 5, toX - 5};
+			int[] yPoints = {toY + 5, toY + 2, toY + 7};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o2 < 0 && o1 == 0) { 
+			// x+ y+
+			int[] xPoints = {toX + 2, toX + 5, toX + 7};
+			int[] yPoints = {toY - 5, toY, toY - 5};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o2 > 0 && o1 == 0) { 
+			// x+ y+
+			int[] xPoints = {toX + 2, toX + 5, toX + 7};
+			int[] yPoints = {toY + 15, toY + 10, toY + 15};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
 		}
 	}
 
@@ -246,9 +308,27 @@ public class PaintPanel extends JPanel {
 	 * 
 	 * @param graphic
 	 */
-
 	public static void setGraphic(Graphics graphic) {
 		PaintPanel.graphic = graphic;
+	}
+
+	/**
+	 * Getter of Status
+	 * 
+	 * @return status as @boolean
+	 */
+	public static boolean isStatus() {
+		return status;
+	}
+
+	/**
+	 * Setter of Status
+	 * 
+	 * @param status
+	 *            as @boolean
+	 */
+	public static void setStatus(boolean status) {
+		PaintPanel.status = status;
 	}
 
 	// ---------- Adder-Methodes ---------->>>
@@ -263,55 +343,6 @@ public class PaintPanel extends JPanel {
 	@SuppressWarnings("unchecked")
 	public void addNode(String color, int id) {
 		getPos(id);
-		element = new String[] { "Node", "" + this.x, "" + this.y, null, null,
-				color.toString(), null, "" + id };
-		elementBuffer.add(element);
-		updateArea();
-	}
-
-	/**
-	 * Update a Node
-	 * 
-	 * @param x
-	 * @param y
-	 * @param color
-	 * @param id
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void updateNode(int x, int y, String color, int id) {
-		int i = 0;
-		List tempList = new ArrayList(elementBuffer);
-		Iterator itr = tempList.iterator();
-
-		// mini-parser
-		while (itr.hasNext()) {
-			element = (String[]) itr.next();
-			if (element[0].equals("Node") && element[7].equals("" + id)) {
-				elementBuffer.remove(i);
-			}
-			i++;
-		}
-		element = new String[] { "Node", "" + x, "" + y, null, null,
-				color.toString(), null, "" + id };
-		elementBuffer.add(element);
-		updateArea();
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void updateNode(String color, int id) {
-		getPos(id);
-		int i = 0;
-		List tempList = new ArrayList(elementBuffer);
-		Iterator itr = tempList.iterator();
-
-		// mini-parser
-		while (itr.hasNext()) {
-			element = (String[]) itr.next();
-			if (element[0].equals("Node") && element[7].equals("" + id)) {
-				elementBuffer.remove(i);
-			}
-			i++;
-		}
 		element = new String[] { "Node", "" + this.x, "" + this.y, null, null,
 				color.toString(), null, "" + id };
 		elementBuffer.add(element);
@@ -340,38 +371,6 @@ public class PaintPanel extends JPanel {
 	}
 
 	/**
-	 * Update a Edge
-	 * 
-	 * @param x
-	 * @param y
-	 * @param toX
-	 * @param toY
-	 * @param color
-	 * @param id
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void updateEdge(int x, int y, int toX, int toY, String color,
-			int idFrom, int idTo) {
-		int i = 0;
-		List tempList = new ArrayList(elementBuffer);
-		Iterator itr = tempList.iterator();
-
-		// mini-parser
-		while (itr.hasNext()) {
-			element = (String[]) itr.next();
-			if (element[0].equals("Edge")
-					&& element[7].equals(idFrom + "-" + idTo)) {
-				elementBuffer.remove(i);
-			}
-			i++;
-		}
-		element = new String[] { "Edge", "" + x, "" + y, "" + toX, "" + toY,
-				color.toString(), null, "" + idFrom + "-" + idTo };
-		elementBuffer.add(element);
-		updateArea();
-	}
-
-	/**
 	 * Add a Text
 	 * 
 	 * @param x
@@ -382,35 +381,6 @@ public class PaintPanel extends JPanel {
 	@SuppressWarnings("unchecked")
 	public void addText(String text, String color, int id) {
 		getPos(id);
-		element = new String[] { "Text", "" + x, "" + y, null, null,
-				color.toString(), text, "" + id };
-		elementBuffer.add(element);
-		updateArea();
-	}
-
-	/**
-	 * Update a Text
-	 * 
-	 * @param x
-	 * @param y
-	 * @param text
-	 * @param color
-	 * @param id
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void updateText(int x, int y, String text, String color, int id) {
-		int i = 0;
-		List tempList = new ArrayList(elementBuffer);
-		Iterator itr = tempList.iterator();
-
-		// mini-parser
-		while (itr.hasNext()) {
-			element = (String[]) itr.next();
-			if (element[0].equals("Text") && element[7].equals("" + id)) {
-				elementBuffer.remove(i);
-			}
-			i++;
-		}
 		element = new String[] { "Text", "" + x, "" + y, null, null,
 				color.toString(), text, "" + id };
 		elementBuffer.add(element);
@@ -488,11 +458,4 @@ public class PaintPanel extends JPanel {
 		}
 	}
 
-	public static boolean isStatus() {
-		return status;
-	}
-
-	public static void setStatus(boolean status) {
-		PaintPanel.status = status;
-	}
 }
