@@ -31,8 +31,11 @@ public class PaintPanel extends JPanel {
 	private static Graphics graphic;
 	private int x;
 	private int y;
+	private int count = 0;
+	private int frame = 0;
 	@SuppressWarnings("rawtypes")
 	private List elementBuffer = new ArrayList();
+	private static boolean status;
 
 	/**
 	 * Constructor PaintPanel.java
@@ -51,12 +54,12 @@ public class PaintPanel extends JPanel {
 	public void updateArea() {
 		super.repaint();
 		super.updateUI();
-		//(getGraphic());
-		//this.repaint();
-		//this.updateUI();
+		// (getGraphic());
+		// this.repaint();
+		// this.updateUI();
 		breaking();
 	}
-	
+
 	/**
 	 * Pause-Mode (0.1 sec)
 	 */
@@ -71,34 +74,53 @@ public class PaintPanel extends JPanel {
 	/**
 	 * Paint now ...
 	 */
-	@SuppressWarnings({ "static-access", "rawtypes" })
+	@SuppressWarnings({ "static-access" })
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		this.setGraphic(g);
 
-		Iterator itr = elementBuffer.iterator();
+		if (isStatus() == true) {
+			int mod = count % 1000;
+			if (mod == 0) {
+				if (frame < elementBuffer.size()) {
+					//System.out.println(getElement(frame));					
+					frame++;
+				} else {
+					//frame = 0;
+				}
+			}
+		}
 
-		// mini-parser
-		while (itr.hasNext()) {
-			element = (String[]) itr.next();
+		for (int i = 0; i < frame; i++) {
+			element = getElement(i);
 
 			if (element[0].equals("Node")) {
 				this.drawNode(Integer.parseInt(element[1]),
 						Integer.parseInt(element[2]), element[5]);
 			} else if (element[0].equals("Edge")) {
 				this.drawEdge(Integer.parseInt(element[1]),
-						Integer.parseInt(element[2]),
-						Integer.parseInt(element[3]),
+						Integer.parseInt(element[2]), Integer.parseInt(element[3]),
 						Integer.parseInt(element[4]), element[5]);
 			} else if (element[0].equals("Text")) {
 				this.drawText(Integer.parseInt(element[1]),
 						Integer.parseInt(element[2]), element[6], element[5]);
 			} else {
-				System.out
-						.println("Error on Paint ... Element not definied ...");
+				System.out.println("Error on Paint ... Element not definied ...");
 			}
 		}
+
 		this.updateUI();
+		count++;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private String[] getElement(int index) {
+		Iterator itr = elementBuffer.iterator();
+		while (index > 0) {
+			element = (String[]) itr.next();
+			index--;
+		}
+		return element;
 	}
 
 	// ---------- Draw-Methodes ---------->>>
@@ -198,6 +220,16 @@ public class PaintPanel extends JPanel {
 	@SuppressWarnings("rawtypes")
 	public void setElementBuffer(List buffer) {
 		this.elementBuffer = buffer;
+	}
+
+	/**
+	 * Sets the Element-Buffer
+	 * 
+	 * @param buffer
+	 */
+	@SuppressWarnings("rawtypes")
+	public void resetElementBuffer() {
+		this.elementBuffer = new ArrayList();
 	}
 
 	/**
@@ -393,66 +425,74 @@ public class PaintPanel extends JPanel {
 	 */
 	private void getPos(int id) {
 		switch (id) {
-			case (0):
-				this.x = 80;
-				this.y = 10;
-				break;
-			case (1):
-				this.x = 60;
-				this.y = 20;
-				break;
-			case (2):
-				this.x = 100;
-				this.y = 20;
-				break;
-			case (3):
-				this.x = 40;
-				this.y = 40;
-				break;
-			case (4):
-				this.x = 120;
-				this.y = 40;
-				break;
-			case (5):
-				this.x = 30;
-				this.y = 60;
-				break;
-			case (6):
-				this.x = 130;
-				this.y = 60;
-				break;
-			case (7):
-				this.x = 40;
-				this.y = 80;
-				break;
-			case (8):
-				this.x = 120;
-				this.y = 80;
-				break;
-			case (9):
-				this.x = 60;
-				this.y = 100;
-				break;
-			case (10):
-				this.x = 100;
-				this.y = 100;
-				break;
-			case (11):
-				this.x = 80;
-				this.y = 110;
-				break;
-			case (12):
-				this.x = 80;
-				this.y = 10;
-				break;
-			case (99):
-				this.x = 10;
-				this.y = 15;
-				break;
-			default:
-				this.x = 10;
-				this.y = 15;
-				break;
+		case (0):
+			this.x = 200;
+			this.y = 50;
+			break;
+		case (1):
+			this.x = 100;
+			this.y = 100;
+			break;
+		case (2):
+			this.x = 200;
+			this.y = 100;
+			break;
+		case (3):
+			this.x = 300;
+			this.y = 100;
+			break;
+		case (4):
+			this.x = 100;
+			this.y = 150;
+			break;
+		case (5):
+			this.x = 200;
+			this.y = 150;
+			break;
+		case (6):
+			this.x = 300;
+			this.y = 150;
+			break;
+		case (7):
+			this.x = 100;
+			this.y = 200;
+			break;
+		case (8):
+			this.x = 200;
+			this.y = 200;
+			break;
+		case (9):
+			this.x = 300;
+			this.y = 200;
+			break;
+		case (10):
+			this.x = 100;
+			this.y = 250;
+			break;
+		case (11):
+			this.x = 80;
+			this.y = 110;
+			break;
+		case (12):
+			this.x = 80;
+			this.y = 10;
+			break;
+		case (99):
+			this.x = 10;
+			this.y = 15;
+			break;
+		default:
+			this.x = 10;
+			this.y = 15;
+			break;
 		}
+	}
+
+	public static boolean isStatus() {
+		return status;
+	}
+
+	public static void setStatus(boolean status) {
+		PaintPanel.status = status;
 	}
 }

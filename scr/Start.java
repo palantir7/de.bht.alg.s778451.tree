@@ -167,38 +167,36 @@ class Start extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == button1) {
+			((PaintPanel) paintPanel).resetElementBuffer();
+			PaintPanel.setStatus(false);
 			this.loadFile();
 			((PaintPanel) paintPanel).updateText(10, 15, "File: " + this.file,
 					"GRAY", 99);
 		} else if (e.getSource() == button2) {
 			if (this.file != null) {
+				PaintPanel.setStatus(false);
 				DepthFirstSearch.run(this.file, (PaintPanel) paintPanel);
 				((PaintPanel) paintPanel).updateText(10, 15, "DFS-Algo",
 						"GRAY", 99);
-			} else {
-				((PaintPanel) paintPanel).updateText(10, 15,
-						"Keine Datei gewählt!", "BLACK", 99);
+				PaintPanel.setStatus(true);
 			}
 		} else if (e.getSource() == button3) {
 			if (this.file != null) {
+				((PaintPanel) paintPanel).resetElementBuffer();
+				PaintPanel.setStatus(false);
 				// TODO: Fill me ...
-			} else {
-				((PaintPanel) paintPanel).updateText(10, 15,
-						"Keine Datei gewählt!", "BLACK", 99);
 			}
 		} else if (e.getSource() == button4) {
 			if (this.file != null) {
+				((PaintPanel) paintPanel).resetElementBuffer();
+				PaintPanel.setStatus(false);
 				// TODO: Fill me ...
-			} else {
-				((PaintPanel) paintPanel).updateText(10, 15,
-						"Keine Datei gewählt!", "BLACK", 99);
 			}
 		} else if (e.getSource() == button5) {
 			if (this.file != null) {
+				((PaintPanel) paintPanel).resetElementBuffer();
+				PaintPanel.setStatus(false);
 				// TODO: Fill me ...
-			} else {
-				((PaintPanel) paintPanel).updateText(10, 15,
-						"Keine Datei gewählt!", "BLACK", 99);
 			}
 		} else {
 			((PaintPanel) paintPanel).updateText(10, 15,
