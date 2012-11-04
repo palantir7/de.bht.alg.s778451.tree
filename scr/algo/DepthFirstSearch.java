@@ -60,7 +60,6 @@ public class DepthFirstSearch extends Thread {
 		for (int i = 0; i < vertexCount; i++) {
 			state[i] = VertexState.WHITE;			
 			((PaintPanel) paintArea).addNode("WHITE", i);
-			((PaintPanel) paintArea).updateArea();
 		}
 		loopDFS(startNode, state);
 	}
@@ -75,8 +74,7 @@ public class DepthFirstSearch extends Thread {
 	 */
 	private static void loopDFS(int u, VertexState[] state) {
 		state[u] = VertexState.GRAY;		
-		((PaintPanel) paintArea).updateNode("GRAY", u);
-		((PaintPanel) paintArea).updateArea();
+		((PaintPanel) paintArea).addNode("GRAY", u);
 
 		for (int v = 0; v < vertexCount; v++) {
 			if (isEdge(u, v) && state[v] == VertexState.WHITE) {
@@ -84,8 +82,7 @@ public class DepthFirstSearch extends Thread {
 			}
 		}
 		state[u] = VertexState.BLACK;		
-		((PaintPanel) paintArea).updateNode("BLACK", u);
-		((PaintPanel) paintArea).updateArea();
+		((PaintPanel) paintArea).addNode("BLACK", u);
 	}
 
 	/**
@@ -105,8 +102,7 @@ public class DepthFirstSearch extends Thread {
 		Iterator i = neighbor.iterator(); i.hasNext();) {
 			Vertex x = (Vertex) i.next();
 			if (x.equals(graph.getVertex(v))) {
-				((PaintPanel) paintArea).addEdge("GRAY", u, v);
-				((PaintPanel) paintArea).updateArea();
+				((PaintPanel) paintArea).addEdge("RED", u, v);
 				return true;
 			}
 		}

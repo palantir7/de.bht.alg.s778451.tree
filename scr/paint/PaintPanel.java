@@ -31,8 +31,11 @@ public class PaintPanel extends JPanel {
 	private static Graphics graphic;
 	private int x;
 	private int y;
+	private int count = 0;
+	private int frame = 0;
 	@SuppressWarnings("rawtypes")
 	private List elementBuffer = new ArrayList();
+	private static boolean status;
 
 	/**
 	 * Constructor PaintPanel.java
@@ -51,12 +54,12 @@ public class PaintPanel extends JPanel {
 	public void updateArea() {
 		super.repaint();
 		super.updateUI();
-		//(getGraphic());
-		//this.repaint();
-		//this.updateUI();
+		// (getGraphic());
+		// this.repaint();
+		// this.updateUI();
 		breaking();
 	}
-	
+
 	/**
 	 * Pause-Mode (0.1 sec)
 	 */
@@ -71,16 +74,26 @@ public class PaintPanel extends JPanel {
 	/**
 	 * Paint now ...
 	 */
-	@SuppressWarnings({ "static-access", "rawtypes" })
+	@SuppressWarnings({ "static-access" })
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		this.setGraphic(g);
 
-		Iterator itr = elementBuffer.iterator();
+		if (isStatus() == true) {
+			//TODO: Timer
+			int mod = count % 1000;
+			if (mod == 0) {
+				if (frame < elementBuffer.size()) {
+					// System.out.println(getElement(frame));
+					frame++;
+				} else {
+					// frame = 0;
+				}
+			}
+		}
 
-		// mini-parser
-		while (itr.hasNext()) {
-			element = (String[]) itr.next();
+		for (int i = 0; i < frame; i++) {
+			element = getElement(i);
 
 			if (element[0].equals("Node")) {
 				this.drawNode(Integer.parseInt(element[1]),
@@ -98,7 +111,23 @@ public class PaintPanel extends JPanel {
 						.println("Error on Paint ... Element not definied ...");
 			}
 		}
+
 		this.updateUI();
+		count++;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private String[] getElement(int index) {
+		try {
+			Iterator itr = elementBuffer.iterator();
+			while (index > 0) {
+				element = (String[]) itr.next();
+				index--;
+			}
+		} catch (Exception e) {
+			// do nothing
+		}
+		return element;
 	}
 
 	// ---------- Draw-Methodes ---------->>>
@@ -140,12 +169,67 @@ public class PaintPanel extends JPanel {
 		if (color.equals("BLACK")) {
 			getGraphic().setColor(Color.BLACK);
 			getGraphic().drawLine(x + 5, y + 5, toX + 5, toY + 5);
+			getArrow(x, y, toX, toY);
 		} else if (color.equals("GRAY")) {
 			getGraphic().setColor(Color.GRAY);
 			getGraphic().drawLine(x + 5, y + 5, toX + 5, toY + 5);
+			getArrow(x, y, toX, toY);
+		} else if (color.equals("RED")) {
+			getGraphic().setColor(Color.RED);
+			getGraphic().drawLine(x + 5, y + 5, toX + 5, toY + 5);
+			getArrow(x, y, toX, toY);
 		} else {
 			getGraphic().setColor(Color.WHITE);
 			getGraphic().drawLine(x + 5, y + 5, toX + 5, toY + 5);
+			getArrow(x, y, toX, toY);
+		}
+	}
+	
+	private void getArrow(int x, int y, int toX, int toY) {
+		// orientation of arrow
+		int o1 = x - toX;
+		int o2 = y - toY;
+		
+		if (o1 > 0 && o2 < 0)  { 
+			// x+ y+
+			int[] xPoints = {toX + 15, toX + 10, toX + 17};
+			int[] yPoints = {toY - 2, toY + 3, toY + 3};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 < 0 && o2 < 0) { 
+			// x+ y+
+			int[] xPoints = {toX - 5, toX, toX - 7};
+			int[] yPoints = {toY - 3, toY + 2, toY + 2};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 < 0 && o2 > 0) { 
+			// x+ y+
+			int[] xPoints = {toX - 5, toX, toX - 7};
+			int[] yPoints = {toY + 13, toY + 8, toY + 8};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 > 0 && o2 > 0) { 
+			// x+ y+
+			int[] xPoints = {toX + 15, toX + 10, toX + 17};
+			int[] yPoints = {toY + 13, toY + 8, toY + 8};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 > 0 && o2 == 0) { 
+			// x+ y+
+			int[] xPoints = {toX + 10, toX + 15, toX + 15};
+			int[] yPoints = {toY + 5, toY + 2, toY + 7};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 < 0 && o2 == 0) { 
+			// x+ y+
+			int[] xPoints = {toX, toX - 5, toX - 5};
+			int[] yPoints = {toY + 5, toY + 2, toY + 7};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o2 < 0 && o1 == 0) { 
+			// x+ y+
+			int[] xPoints = {toX + 2, toX + 5, toX + 7};
+			int[] yPoints = {toY - 5, toY, toY - 5};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o2 > 0 && o1 == 0) { 
+			// x+ y+
+			int[] xPoints = {toX + 2, toX + 5, toX + 7};
+			int[] yPoints = {toY + 15, toY + 10, toY + 15};
+		    getGraphic().drawPolygon(xPoints, yPoints, 3);
 		}
 	}
 
@@ -201,6 +285,18 @@ public class PaintPanel extends JPanel {
 	}
 
 	/**
+	 * Sets the Element-Buffer
+	 * 
+	 * @param buffer
+	 */
+	@SuppressWarnings("rawtypes")
+	public void resetElementBuffer() {
+		this.elementBuffer = new ArrayList();
+		frame = 0;
+		count = 0;
+	}
+
+	/**
 	 * Getter of Graphics
 	 * 
 	 * @return @Graphics
@@ -214,9 +310,27 @@ public class PaintPanel extends JPanel {
 	 * 
 	 * @param graphic
 	 */
-
 	public static void setGraphic(Graphics graphic) {
 		PaintPanel.graphic = graphic;
+	}
+
+	/**
+	 * Getter of Status
+	 * 
+	 * @return status as @boolean
+	 */
+	public static boolean isStatus() {
+		return status;
+	}
+
+	/**
+	 * Setter of Status
+	 * 
+	 * @param status
+	 *            as @boolean
+	 */
+	public static void setStatus(boolean status) {
+		PaintPanel.status = status;
 	}
 
 	// ---------- Adder-Methodes ---------->>>
@@ -231,55 +345,6 @@ public class PaintPanel extends JPanel {
 	@SuppressWarnings("unchecked")
 	public void addNode(String color, int id) {
 		getPos(id);
-		element = new String[] { "Node", "" + this.x, "" + this.y, null, null,
-				color.toString(), null, "" + id };
-		elementBuffer.add(element);
-		updateArea();
-	}
-
-	/**
-	 * Update a Node
-	 * 
-	 * @param x
-	 * @param y
-	 * @param color
-	 * @param id
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void updateNode(int x, int y, String color, int id) {
-		int i = 0;
-		List tempList = new ArrayList(elementBuffer);
-		Iterator itr = tempList.iterator();
-
-		// mini-parser
-		while (itr.hasNext()) {
-			element = (String[]) itr.next();
-			if (element[0].equals("Node") && element[7].equals("" + id)) {
-				elementBuffer.remove(i);
-			}
-			i++;
-		}
-		element = new String[] { "Node", "" + x, "" + y, null, null,
-				color.toString(), null, "" + id };
-		elementBuffer.add(element);
-		updateArea();
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void updateNode(String color, int id) {
-		getPos(id);
-		int i = 0;
-		List tempList = new ArrayList(elementBuffer);
-		Iterator itr = tempList.iterator();
-
-		// mini-parser
-		while (itr.hasNext()) {
-			element = (String[]) itr.next();
-			if (element[0].equals("Node") && element[7].equals("" + id)) {
-				elementBuffer.remove(i);
-			}
-			i++;
-		}
 		element = new String[] { "Node", "" + this.x, "" + this.y, null, null,
 				color.toString(), null, "" + id };
 		elementBuffer.add(element);
@@ -308,38 +373,6 @@ public class PaintPanel extends JPanel {
 	}
 
 	/**
-	 * Update a Edge
-	 * 
-	 * @param x
-	 * @param y
-	 * @param toX
-	 * @param toY
-	 * @param color
-	 * @param id
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void updateEdge(int x, int y, int toX, int toY, String color,
-			int idFrom, int idTo) {
-		int i = 0;
-		List tempList = new ArrayList(elementBuffer);
-		Iterator itr = tempList.iterator();
-
-		// mini-parser
-		while (itr.hasNext()) {
-			element = (String[]) itr.next();
-			if (element[0].equals("Edge")
-					&& element[7].equals(idFrom + "-" + idTo)) {
-				elementBuffer.remove(i);
-			}
-			i++;
-		}
-		element = new String[] { "Edge", "" + x, "" + y, "" + toX, "" + toY,
-				color.toString(), null, "" + idFrom + "-" + idTo };
-		elementBuffer.add(element);
-		updateArea();
-	}
-
-	/**
 	 * Add a Text
 	 * 
 	 * @param x
@@ -357,35 +390,6 @@ public class PaintPanel extends JPanel {
 	}
 
 	/**
-	 * Update a Text
-	 * 
-	 * @param x
-	 * @param y
-	 * @param text
-	 * @param color
-	 * @param id
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void updateText(int x, int y, String text, String color, int id) {
-		int i = 0;
-		List tempList = new ArrayList(elementBuffer);
-		Iterator itr = tempList.iterator();
-
-		// mini-parser
-		while (itr.hasNext()) {
-			element = (String[]) itr.next();
-			if (element[0].equals("Text") && element[7].equals("" + id)) {
-				elementBuffer.remove(i);
-			}
-			i++;
-		}
-		element = new String[] { "Text", "" + x, "" + y, null, null,
-				color.toString(), text, "" + id };
-		elementBuffer.add(element);
-		updateArea();
-	}
-
-	/**
 	 * Position Getter
 	 * 
 	 * @param id
@@ -393,66 +397,67 @@ public class PaintPanel extends JPanel {
 	 */
 	private void getPos(int id) {
 		switch (id) {
-			case (0):
-				this.x = 80;
-				this.y = 10;
-				break;
-			case (1):
-				this.x = 60;
-				this.y = 20;
-				break;
-			case (2):
-				this.x = 100;
-				this.y = 20;
-				break;
-			case (3):
-				this.x = 40;
-				this.y = 40;
-				break;
-			case (4):
-				this.x = 120;
-				this.y = 40;
-				break;
-			case (5):
-				this.x = 30;
-				this.y = 60;
-				break;
-			case (6):
-				this.x = 130;
-				this.y = 60;
-				break;
-			case (7):
-				this.x = 40;
-				this.y = 80;
-				break;
-			case (8):
-				this.x = 120;
-				this.y = 80;
-				break;
-			case (9):
-				this.x = 60;
-				this.y = 100;
-				break;
-			case (10):
-				this.x = 100;
-				this.y = 100;
-				break;
-			case (11):
-				this.x = 80;
-				this.y = 110;
-				break;
-			case (12):
-				this.x = 80;
-				this.y = 10;
-				break;
-			case (99):
-				this.x = 10;
-				this.y = 15;
-				break;
-			default:
-				this.x = 10;
-				this.y = 15;
-				break;
+		case (0):
+			this.x = 200;
+			this.y = 50;
+			break;
+		case (1):
+			this.x = 100;
+			this.y = 100;
+			break;
+		case (2):
+			this.x = 200;
+			this.y = 100;
+			break;
+		case (3):
+			this.x = 300;
+			this.y = 100;
+			break;
+		case (4):
+			this.x = 100;
+			this.y = 150;
+			break;
+		case (5):
+			this.x = 200;
+			this.y = 150;
+			break;
+		case (6):
+			this.x = 300;
+			this.y = 150;
+			break;
+		case (7):
+			this.x = 100;
+			this.y = 200;
+			break;
+		case (8):
+			this.x = 200;
+			this.y = 200;
+			break;
+		case (9):
+			this.x = 300;
+			this.y = 200;
+			break;
+		case (10):
+			this.x = 100;
+			this.y = 250;
+			break;
+		case (11):
+			this.x = 80;
+			this.y = 110;
+			break;
+		case (12):
+			this.x = 80;
+			this.y = 10;
+			break;
+		case (99):
+			this.x = 10;
+			this.y = 15;
+			break;
+		default:
+			this.x = 10;
+			this.y = 15;
+			break;
 		}
 	}
+
 }

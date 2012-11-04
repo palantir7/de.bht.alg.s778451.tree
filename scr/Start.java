@@ -148,6 +148,8 @@ class Start extends JFrame implements ActionListener {
 	/**
 	 * load a file
 	 */
+	// "D:\\SVN\\LAN-HDDs\\ALG\\de.bht.alg.s778451.tree\\scr\\dat"
+	// "C:\\Users\\Marcel\\Documents\\GitHub\\de.bht.alg.s778451.tree\\scr\\dat"
 	public void loadFile() {
 		fc = new JFileChooser(new File(
 				"D:\\SVN\\LAN-HDDs\\ALG\\de.bht.alg.s778451.tree\\scr\\dat"));
@@ -166,43 +168,38 @@ class Start extends JFrame implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		PaintPanel.setStatus(false);
+		
 		if (e.getSource() == button1) {
 			this.loadFile();
-			((PaintPanel) paintPanel).updateText(10, 15, "File: " + this.file,
-					"GRAY", 99);
 		} else if (e.getSource() == button2) {
 			if (this.file != null) {
+				((PaintPanel) paintPanel).resetElementBuffer();
 				DepthFirstSearch.run(this.file, (PaintPanel) paintPanel);
-				((PaintPanel) paintPanel).updateText(10, 15, "DFS-Algo",
-						"GRAY", 99);
-			} else {
-				((PaintPanel) paintPanel).updateText(10, 15,
-						"Keine Datei gewählt!", "BLACK", 99);
+				PaintPanel.setStatus(true);				
+				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		} else if (e.getSource() == button3) {
 			if (this.file != null) {
+				((PaintPanel) paintPanel).resetElementBuffer();
 				// TODO: Fill me ...
-			} else {
-				((PaintPanel) paintPanel).updateText(10, 15,
-						"Keine Datei gewählt!", "BLACK", 99);
+				PaintPanel.setStatus(true);				
+				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		} else if (e.getSource() == button4) {
 			if (this.file != null) {
+				((PaintPanel) paintPanel).resetElementBuffer();
 				// TODO: Fill me ...
-			} else {
-				((PaintPanel) paintPanel).updateText(10, 15,
-						"Keine Datei gewählt!", "BLACK", 99);
+				PaintPanel.setStatus(true);				
+				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		} else if (e.getSource() == button5) {
 			if (this.file != null) {
+				((PaintPanel) paintPanel).resetElementBuffer();
 				// TODO: Fill me ...
-			} else {
-				((PaintPanel) paintPanel).updateText(10, 15,
-						"Keine Datei gewählt!", "BLACK", 99);
+				PaintPanel.setStatus(true);				
+				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
-		} else {
-			((PaintPanel) paintPanel).updateText(10, 15,
-					"Es ist ein Fehler aufgetreten!", "BLACK", 99);
 		}
 	}
 }
