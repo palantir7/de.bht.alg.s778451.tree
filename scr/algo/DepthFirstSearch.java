@@ -58,7 +58,7 @@ public class DepthFirstSearch {
 		// Set all Vertices to WHITE
 		VertexState state[] = new VertexState[vertexCount];
 		for (int i = 0; i < vertexCount; i++) {
-			state[i] = VertexState.WHITE;			
+			state[i] = VertexState.WHITE;
 			((PaintPanel) paintArea).addNode("WHITE", i);
 			((PaintPanel) paintArea).addText("" + i, "BLACK", i);
 		}
@@ -74,7 +74,7 @@ public class DepthFirstSearch {
 	 *            Color of Node (State)
 	 */
 	private static void loopDFS(int u, VertexState[] state) {
-		state[u] = VertexState.GRAY;		
+		state[u] = VertexState.GRAY;
 		((PaintPanel) paintArea).addNode("GRAY", u);
 
 		for (int v = 0; v < vertexCount; v++) {
@@ -82,7 +82,7 @@ public class DepthFirstSearch {
 				loopDFS(v, state);
 			}
 		}
-		state[u] = VertexState.BLACK;		
+		state[u] = VertexState.BLACK;
 		((PaintPanel) paintArea).addNode("BLACK", u);
 	}
 
@@ -109,8 +109,8 @@ public class DepthFirstSearch {
 		}
 		return false;
 	}
-	
-	//---------- Getten & Setter ---------->>>
+
+	// ---------- Getten & Setter ---------->>>
 
 	/**
 	 * Graph Getter
@@ -126,7 +126,7 @@ public class DepthFirstSearch {
 	 * Graph Setter
 	 * 
 	 * @param g
-	 *            @Graph
+	 * @Graph
 	 */
 	@SuppressWarnings("rawtypes")
 	public static void setGraph(Graph g) {

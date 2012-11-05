@@ -62,18 +62,18 @@ public class BreadthFirstSearch {
 
 		int[] parent = new int[graph.getNumberVertices()];
 		for (int i = 0; i < graph.getNumberVertices(); i++) {
-			
+
 			((PaintPanel) paintArea).addNode("WHITE", i);
 			((PaintPanel) paintArea).addText("" + i, "BLACK", i);
-			
+
 			parent[i] = -1;
 		}
 
 		boolean[] identified = new boolean[graph.getNumberVertices()];
 		identified[startNode] = true;
-		
+
 		((PaintPanel) paintArea).addNode("GRAY", startNode);
-		
+
 		theQueue.offer(startNode);
 
 		while (!theQueue.isEmpty()) {
@@ -82,18 +82,18 @@ public class BreadthFirstSearch {
 			isEdge(startNode, currentNode);
 			while (itr.hasNext()) {
 				int nextNode = Integer.parseInt(itr.next().toString());
-				
+
 				if (!identified[nextNode]) {
 					isEdge(currentNode, nextNode);
-					
+
 					identified[nextNode] = true;
-					
+
 					((PaintPanel) paintArea).addNode("GRAY", nextNode);
-					
+
 					theQueue.offer(nextNode);
 					parent[nextNode] = currentNode;
 				}
-				
+
 				((PaintPanel) paintArea).addNode("BLACK", currentNode);
 			}
 		}

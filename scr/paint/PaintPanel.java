@@ -77,7 +77,7 @@ public class PaintPanel extends JPanel {
 		this.setGraphic(g);
 
 		if (isStatus() == true) {
-			//TODO: Timer
+			// TODO: Timer
 			int mod = count % 1000;
 			if (mod == 0) {
 				if (frame < elementBuffer.size()) {
@@ -181,52 +181,52 @@ public class PaintPanel extends JPanel {
 			getArrow(x, y, toX, toY);
 		}
 	}
-	
+
 	private void getArrow(int x, int y, int toX, int toY) {
 		// orientation of arrow
 		int o1 = x - toX;
 		int o2 = y - toY;
-		
-		if (o1 > 0 && o2 < 0)  { 
+
+		if (o1 > 0 && o2 < 0) {
 			// x+ y+
-			int[] xPoints = {toX + 15, toX + 10, toX + 17};
-			int[] yPoints = {toY - 2, toY + 3, toY + 3};
-		    getGraphic().drawPolygon(xPoints, yPoints, 3);
-		} else if (o1 < 0 && o2 < 0) { 
+			int[] xPoints = { toX + 15, toX + 10, toX + 17 };
+			int[] yPoints = { toY - 2, toY + 3, toY + 3 };
+			getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 < 0 && o2 < 0) {
 			// x+ y+
-			int[] xPoints = {toX - 5, toX, toX - 7};
-			int[] yPoints = {toY - 3, toY + 2, toY + 2};
-		    getGraphic().drawPolygon(xPoints, yPoints, 3);
-		} else if (o1 < 0 && o2 > 0) { 
+			int[] xPoints = { toX - 5, toX, toX - 7 };
+			int[] yPoints = { toY - 3, toY + 2, toY + 2 };
+			getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 < 0 && o2 > 0) {
 			// x+ y+
-			int[] xPoints = {toX - 5, toX, toX - 7};
-			int[] yPoints = {toY + 13, toY + 8, toY + 8};
-		    getGraphic().drawPolygon(xPoints, yPoints, 3);
-		} else if (o1 > 0 && o2 > 0) { 
+			int[] xPoints = { toX - 5, toX, toX - 7 };
+			int[] yPoints = { toY + 13, toY + 8, toY + 8 };
+			getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 > 0 && o2 > 0) {
 			// x+ y+
-			int[] xPoints = {toX + 15, toX + 10, toX + 17};
-			int[] yPoints = {toY + 13, toY + 8, toY + 8};
-		    getGraphic().drawPolygon(xPoints, yPoints, 3);
-		} else if (o1 > 0 && o2 == 0) { 
+			int[] xPoints = { toX + 15, toX + 10, toX + 17 };
+			int[] yPoints = { toY + 13, toY + 8, toY + 8 };
+			getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 > 0 && o2 == 0) {
 			// x+ y+
-			int[] xPoints = {toX + 10, toX + 15, toX + 15};
-			int[] yPoints = {toY + 5, toY + 2, toY + 7};
-		    getGraphic().drawPolygon(xPoints, yPoints, 3);
-		} else if (o1 < 0 && o2 == 0) { 
+			int[] xPoints = { toX + 10, toX + 15, toX + 15 };
+			int[] yPoints = { toY + 5, toY + 2, toY + 7 };
+			getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o1 < 0 && o2 == 0) {
 			// x+ y+
-			int[] xPoints = {toX, toX - 5, toX - 5};
-			int[] yPoints = {toY + 5, toY + 2, toY + 7};
-		    getGraphic().drawPolygon(xPoints, yPoints, 3);
-		} else if (o2 < 0 && o1 == 0) { 
+			int[] xPoints = { toX, toX - 5, toX - 5 };
+			int[] yPoints = { toY + 5, toY + 2, toY + 7 };
+			getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o2 < 0 && o1 == 0) {
 			// x+ y+
-			int[] xPoints = {toX + 2, toX + 5, toX + 7};
-			int[] yPoints = {toY - 5, toY, toY - 5};
-		    getGraphic().drawPolygon(xPoints, yPoints, 3);
-		} else if (o2 > 0 && o1 == 0) { 
+			int[] xPoints = { toX + 2, toX + 5, toX + 7 };
+			int[] yPoints = { toY - 5, toY, toY - 5 };
+			getGraphic().drawPolygon(xPoints, yPoints, 3);
+		} else if (o2 > 0 && o1 == 0) {
 			// x+ y+
-			int[] xPoints = {toX + 2, toX + 5, toX + 7};
-			int[] yPoints = {toY + 15, toY + 10, toY + 15};
-		    getGraphic().drawPolygon(xPoints, yPoints, 3);
+			int[] xPoints = { toX + 2, toX + 5, toX + 7 };
+			int[] yPoints = { toY + 15, toY + 10, toY + 15 };
+			getGraphic().drawPolygon(xPoints, yPoints, 3);
 		}
 	}
 
@@ -399,66 +399,66 @@ public class PaintPanel extends JPanel {
 	 */
 	private void getPos(int id) {
 		switch (id) {
-		case (0):
-			this.x = 200;
-			this.y = 50;
-			break;
-		case (1):
-			this.x = 100;
-			this.y = 100;
-			break;
-		case (2):
-			this.x = 200;
-			this.y = 100;
-			break;
-		case (3):
-			this.x = 300;
-			this.y = 100;
-			break;
-		case (4):
-			this.x = 100;
-			this.y = 150;
-			break;
-		case (5):
-			this.x = 200;
-			this.y = 150;
-			break;
-		case (6):
-			this.x = 300;
-			this.y = 150;
-			break;
-		case (7):
-			this.x = 100;
-			this.y = 200;
-			break;
-		case (8):
-			this.x = 200;
-			this.y = 200;
-			break;
-		case (9):
-			this.x = 300;
-			this.y = 200;
-			break;
-		case (10):
-			this.x = 100;
-			this.y = 250;
-			break;
-		case (11):
-			this.x = 80;
-			this.y = 110;
-			break;
-		case (12):
-			this.x = 80;
-			this.y = 10;
-			break;
-		case (99):
-			this.x = 10;
-			this.y = 15;
-			break;
-		default:
-			this.x = 10;
-			this.y = 15;
-			break;
+			case (0):
+				this.x = 200;
+				this.y = 50;
+				break;
+			case (1):
+				this.x = 100;
+				this.y = 100;
+				break;
+			case (2):
+				this.x = 200;
+				this.y = 100;
+				break;
+			case (3):
+				this.x = 300;
+				this.y = 100;
+				break;
+			case (4):
+				this.x = 100;
+				this.y = 150;
+				break;
+			case (5):
+				this.x = 200;
+				this.y = 150;
+				break;
+			case (6):
+				this.x = 300;
+				this.y = 150;
+				break;
+			case (7):
+				this.x = 100;
+				this.y = 200;
+				break;
+			case (8):
+				this.x = 200;
+				this.y = 200;
+				break;
+			case (9):
+				this.x = 300;
+				this.y = 200;
+				break;
+			case (10):
+				this.x = 100;
+				this.y = 250;
+				break;
+			case (11):
+				this.x = 80;
+				this.y = 110;
+				break;
+			case (12):
+				this.x = 80;
+				this.y = 10;
+				break;
+			case (99):
+				this.x = 10;
+				this.y = 15;
+				break;
+			default:
+				this.x = 10;
+				this.y = 15;
+				break;
 		}
 	}
 

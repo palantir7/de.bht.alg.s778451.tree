@@ -72,12 +72,12 @@ class Start extends JFrame implements ActionListener {
 				frame.setLayout(new BorderLayout());
 				frame.setTitle("ALGO - TreeViewer");
 				frame.setSize(718, 390);
-				
+
 				mainPanel = new JPanel();
 			}
 		});
 	}
-	
+
 	public void centerToScreen() {
 		// Move the window
 		this.setLocationRelativeTo(getRootPane());
@@ -87,7 +87,7 @@ class Start extends JFrame implements ActionListener {
 	 * initComponents()
 	 */
 	private void initComponents() {
-		
+
 		// center to screen
 		centerToScreen();
 
@@ -173,7 +173,7 @@ class Start extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		PaintPanel.setStatus(false);
-		
+
 		if (e.getSource() == button1) {
 			this.loadFile();
 		} else if (e.getSource() == button2) {
@@ -181,7 +181,7 @@ class Start extends JFrame implements ActionListener {
 				// DFS
 				((PaintPanel) paintPanel).resetElementBuffer();
 				DepthFirstSearch.run(this.file, (PaintPanel) paintPanel);
-				PaintPanel.setStatus(true);				
+				PaintPanel.setStatus(true);
 				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		} else if (e.getSource() == button3) {
@@ -189,7 +189,7 @@ class Start extends JFrame implements ActionListener {
 				// BFS
 				((PaintPanel) paintPanel).resetElementBuffer();
 				BreadthFirstSearch.run(this.file, (PaintPanel) paintPanel);
-				PaintPanel.setStatus(true);	
+				PaintPanel.setStatus(true);
 				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		} else if (e.getSource() == button4) {
@@ -198,7 +198,8 @@ class Start extends JFrame implements ActionListener {
 				((PaintPanel) paintPanel).resetElementBuffer();
 				// TODO: Fill me ...
 				PaintPanel.setStatus(true);
-				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!", "RED", 99);		
+				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!",
+						"RED", 99);
 				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		} else if (e.getSource() == button5) {
@@ -207,7 +208,8 @@ class Start extends JFrame implements ActionListener {
 				((PaintPanel) paintPanel).resetElementBuffer();
 				// TODO: Fill me ...
 				PaintPanel.setStatus(true);
-				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!", "RED", 99);	
+				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!",
+						"RED", 99);
 				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		}
