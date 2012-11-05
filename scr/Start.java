@@ -177,6 +177,7 @@ class Start extends JFrame implements ActionListener {
 			this.loadFile();
 		} else if (e.getSource() == button2) {
 			if (this.file != null) {
+				// DFS
 				((PaintPanel) paintPanel).resetElementBuffer();
 				DepthFirstSearch.run(this.file, (PaintPanel) paintPanel);
 				PaintPanel.setStatus(true);				
@@ -184,23 +185,29 @@ class Start extends JFrame implements ActionListener {
 			}
 		} else if (e.getSource() == button3) {
 			if (this.file != null) {
+				// BFS
 				((PaintPanel) paintPanel).resetElementBuffer();
 				// TODO: Fill me ...
-				PaintPanel.setStatus(true);				
+				PaintPanel.setStatus(true);	
+				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!", "RED", 99);
 				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		} else if (e.getSource() == button4) {
 			if (this.file != null) {
+				// Dijkstra
 				((PaintPanel) paintPanel).resetElementBuffer();
 				// TODO: Fill me ...
-				PaintPanel.setStatus(true);				
+				PaintPanel.setStatus(true);
+				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!", "RED", 99);		
 				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		} else if (e.getSource() == button5) {
 			if (this.file != null) {
+				// Kruskal
 				((PaintPanel) paintPanel).resetElementBuffer();
 				// TODO: Fill me ...
-				PaintPanel.setStatus(true);				
+				PaintPanel.setStatus(true);
+				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!", "RED", 99);	
 				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		}
