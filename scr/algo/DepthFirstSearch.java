@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 import paint.PaintPanel;
 
-public class DepthFirstSearch extends Thread {
+public class DepthFirstSearch {
 
 	@SuppressWarnings("rawtypes")
 	private static Graph graph;

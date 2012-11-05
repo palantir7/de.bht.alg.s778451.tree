@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
 import paint.PaintPanel;
+import algo.BreadthFirstSearch;
 import algo.DepthFirstSearch;
 
 /**
@@ -187,9 +188,8 @@ class Start extends JFrame implements ActionListener {
 			if (this.file != null) {
 				// BFS
 				((PaintPanel) paintPanel).resetElementBuffer();
-				// TODO: Fill me ...
+				BreadthFirstSearch.run(this.file, (PaintPanel) paintPanel);
 				PaintPanel.setStatus(true);	
-				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!", "RED", 99);
 				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		} else if (e.getSource() == button4) {
