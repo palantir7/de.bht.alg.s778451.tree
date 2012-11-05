@@ -13,9 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-import algo.DepthFirstSearch;
-
 import paint.PaintPanel;
+import algo.DepthFirstSearch;
 
 /**
  * @author Marcel Buchmann (s778451)
@@ -57,9 +56,6 @@ class Start extends JFrame implements ActionListener {
 	 */
 	public Start() {
 		initComponents();
-
-		((PaintPanel) paintPanel).addText("Welcome ... ", "BLACK", 99);
-		paintPanel.updateUI();
 	}
 
 	/**
@@ -74,16 +70,25 @@ class Start extends JFrame implements ActionListener {
 				JFrame frame = new Start();
 				frame.setLayout(new BorderLayout());
 				frame.setTitle("ALGO - TreeViewer");
-				frame.setSize(680, 390);
+				frame.setSize(718, 390);
+				
 				mainPanel = new JPanel();
 			}
 		});
+	}
+	
+	public void centerToScreen() {
+		// Move the window
+		this.setLocationRelativeTo(getRootPane());
 	}
 
 	/**
 	 * initComponents()
 	 */
 	private void initComponents() {
+		
+		// center to screen
+		centerToScreen();
 
 		// paint panel
 		paintPanel = new PaintPanel();
@@ -101,13 +106,13 @@ class Start extends JFrame implements ActionListener {
 		button1 = new JButton("Load a File");
 		button1.addActionListener(this);
 		iPanel.add(button1);
-		button2 = new JButton("DFS - Algo");
+		button2 = new JButton("Depth First Search");
 		button2.addActionListener(this);
 		iPanel.add(button2);
-		button3 = new JButton("BFS - Algo");
+		button3 = new JButton("Breadth First Search");
 		button3.addActionListener(this);
 		iPanel.add(button3);
-		button4 = new JButton("Djiska - Algo");
+		button4 = new JButton("Dijkstra - Algo");
 		button4.addActionListener(this);
 		iPanel.add(button4);
 		button5 = new JButton("Kruskal - Algo");
@@ -120,8 +125,6 @@ class Start extends JFrame implements ActionListener {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		pack();
-
-		((PaintPanel) paintPanel).updateArea();
 	}
 
 	/**

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package paint;
 
 import java.awt.Color;
@@ -246,19 +243,24 @@ public class PaintPanel extends JPanel {
 		String family = "Lucida Sans Typewriter";
 		int style = Font.PLAIN;
 		int size = 10;
+		int modX = 7;
+		int modY = -3;
 		Font font = new Font(family, style, size);
 
 		getGraphic().setFont(font);
 
 		if (color.equals("BLACK")) {
 			getGraphic().setColor(Color.BLACK);
-			getGraphic().drawString(text, x, y);
+			getGraphic().drawString(text, x + modX, y + modY);
 		} else if (color.equals("GRAY")) {
 			getGraphic().setColor(Color.GRAY);
-			getGraphic().drawString(text, x, y);
+			getGraphic().drawString(text, x + modX, y + modY);
+		} else if (color.equals("RED")) {
+			getGraphic().setColor(Color.RED);
+			getGraphic().drawString(text, x + modX, y + modY);
 		} else {
 			getGraphic().setColor(Color.WHITE);
-			getGraphic().drawString(text, x, y);
+			getGraphic().drawString(text, x + modX, y + modY);
 		}
 	}
 

@@ -60,6 +60,7 @@ public class DepthFirstSearch extends Thread {
 		for (int i = 0; i < vertexCount; i++) {
 			state[i] = VertexState.WHITE;			
 			((PaintPanel) paintArea).addNode("WHITE", i);
+			((PaintPanel) paintArea).addText("" + i, "BLACK", i);
 		}
 		loopDFS(startNode, state);
 	}
