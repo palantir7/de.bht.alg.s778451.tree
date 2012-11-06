@@ -75,7 +75,7 @@ public class PaintPanel extends JPanel {
 
 		if (isStatus() == true) {
 			// TODO: Timer
-			int mod = count % 1000;
+			int mod = count % 750;
 			if (mod == 0) {
 				if (frame < elementBuffer.size()) {
 					// System.out.println(getElement(frame));

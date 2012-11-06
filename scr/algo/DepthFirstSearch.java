@@ -33,6 +33,12 @@ public class DepthFirstSearch {
 		Graph<Vertex, Edge<Vertex>> G = GraphLesen.FileToGraph(url, false);
 		DepthFirstSearch.setGraph(G);
 
+		for(int i=0; i < graph.getNumberVertices(); i++) {
+			for(int j=0; j < graph.getNumberVertices(); j++) {
+				isEdgeInit(i, j);
+			}
+		}
+
 		// (only for tests in use) !!!
 		readGraph(G, 0);
 	}
@@ -84,6 +90,30 @@ public class DepthFirstSearch {
 		}
 		state[u] = VertexState.BLACK;
 		((PaintPanel) paintArea).addNode("BLACK", u);
+	}
+
+	/**
+	 * Looking at Point 'u' and Point 'v' whether they have an Edge
+	 * 
+	 * @param u
+	 *            Parent-Node
+	 * @param v
+	 *            Neighbor-Node
+	 * @return @boolean true or false
+	 */
+	private static boolean isEdgeInit(int u, int v) {
+		@SuppressWarnings("unchecked")
+		Collection<Vertex> neighbor = graph.getNeighbours(u);
+
+		for (@SuppressWarnings("rawtypes")
+		Iterator i = neighbor.iterator(); i.hasNext();) {
+			Vertex x = (Vertex) i.next();
+			if (x.equals(graph.getVertex(v))) {
+				((PaintPanel) paintArea).addEdge("GRAY", u, v);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

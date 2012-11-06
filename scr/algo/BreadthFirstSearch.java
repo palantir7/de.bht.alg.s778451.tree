@@ -45,12 +45,12 @@ public class BreadthFirstSearch {
 		Graph<Vertex, Edge<Vertex>> G = GraphLesen.FileToGraph(url, false);
 		BreadthFirstSearch.setGraph(G);
 
-		for(int i=0; i < graph.getNumberVertices(); i++) {
-			for(int j=0; j < graph.getNumberVertices(); j++) {
+		for (int i = 0; i < graph.getNumberVertices(); i++) {
+			for (int j = 0; j < graph.getNumberVertices(); j++) {
 				isEdgeInit(i, j);
 			}
 		}
-		
+
 		// (only for tests in use) !!!
 		int startNode = 0;
 		readGraph(G, startNode);
@@ -69,12 +69,12 @@ public class BreadthFirstSearch {
 
 		int[] parent = new int[graph.getNumberVertices()];
 		int[][] dist = new int[graph.getNumberVertices()][1];
-		
+
 		for (int i = 0; i < graph.getNumberVertices(); i++) {
 
 			((PaintPanel) paintArea).addNode("WHITE", i);
 			((PaintPanel) paintArea).addText("" + i, "BLACK", i);
-			
+
 			parent[i] = -1;
 		}
 
@@ -88,10 +88,10 @@ public class BreadthFirstSearch {
 		while (!theQueue.isEmpty()) {
 			int currentNode = theQueue.remove();
 			Iterator itr = graph.getNeighbours(currentNode).iterator();
-			
+
 			dist[currentNode][0]++;
 			isEdge(startNode, currentNode);
-			
+
 			while (itr.hasNext()) {
 				int nextNode = Integer.parseInt(itr.next().toString());
 
@@ -104,16 +104,14 @@ public class BreadthFirstSearch {
 
 					theQueue.offer(nextNode);
 					parent[nextNode] = currentNode;
-					dist[nextNode][0] = dist[nextNode][0] + dist[currentNode][0];
+					dist[nextNode][0] = dist[nextNode][0]
+							+ dist[currentNode][0];
 				}
-				
+
 				((PaintPanel) paintArea).addNode("BLACK", currentNode);
+				((PaintPanel) paintArea).addText("   Dist: "
+						+ (dist[currentNode][0] - 1), "BLACK", currentNode);
 			}
-		}
-		
-		for(int i = 0; i < graph.getNumberVertices(); i++) {
-			dist[i][0] = dist[i][0] - 1;
-			System.out.println("Node " + i + " distance to StartNode: " + dist[i][0]);
 		}
 		// return parent;
 	}
