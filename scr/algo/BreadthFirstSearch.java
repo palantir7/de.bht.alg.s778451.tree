@@ -46,7 +46,8 @@ public class BreadthFirstSearch {
 		BreadthFirstSearch.setGraph(G);
 
 		// (only for tests in use) !!!
-		readGraph(G, 0);
+		int startNode = 8;
+		readGraph(G, startNode);
 	}
 
 	/**
@@ -61,11 +62,13 @@ public class BreadthFirstSearch {
 		Queue<Integer> theQueue = new LinkedList<Integer>();
 
 		int[] parent = new int[graph.getNumberVertices()];
+		int[][] dist = new int[graph.getNumberVertices()][1];
+		
 		for (int i = 0; i < graph.getNumberVertices(); i++) {
 
 			((PaintPanel) paintArea).addNode("WHITE", i);
 			((PaintPanel) paintArea).addText("" + i, "BLACK", i);
-
+			
 			parent[i] = -1;
 		}
 
@@ -79,7 +82,10 @@ public class BreadthFirstSearch {
 		while (!theQueue.isEmpty()) {
 			int currentNode = theQueue.remove();
 			Iterator itr = graph.getNeighbours(currentNode).iterator();
+			
+			dist[currentNode][0]++;
 			isEdge(startNode, currentNode);
+			
 			while (itr.hasNext()) {
 				int nextNode = Integer.parseInt(itr.next().toString());
 
@@ -92,10 +98,16 @@ public class BreadthFirstSearch {
 
 					theQueue.offer(nextNode);
 					parent[nextNode] = currentNode;
+					dist[nextNode][0] = dist[nextNode][0] + dist[currentNode][0];
 				}
-
+				
 				((PaintPanel) paintArea).addNode("BLACK", currentNode);
 			}
+		}
+		
+		for(int i = 0; i < graph.getNumberVertices(); i++) {
+			dist[i][0] = dist[i][0] - 1;
+			System.out.println("Node " + i + " distance to StartNode: " + dist[i][0]);
 		}
 		// return parent;
 	}

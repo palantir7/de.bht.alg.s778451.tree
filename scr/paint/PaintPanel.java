@@ -51,9 +51,6 @@ public class PaintPanel extends JPanel {
 	public void updateArea() {
 		super.repaint();
 		super.updateUI();
-		// (getGraphic());
-		// this.repaint();
-		// this.updateUI();
 		breaking();
 	}
 
