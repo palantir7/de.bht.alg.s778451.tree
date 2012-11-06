@@ -45,8 +45,14 @@ public class BreadthFirstSearch {
 		Graph<Vertex, Edge<Vertex>> G = GraphLesen.FileToGraph(url, false);
 		BreadthFirstSearch.setGraph(G);
 
+		for(int i=0; i < graph.getNumberVertices(); i++) {
+			for(int j=0; j < graph.getNumberVertices(); j++) {
+				isEdgeInit(i, j);
+			}
+		}
+		
 		// (only for tests in use) !!!
-		int startNode = 8;
+		int startNode = 0;
 		readGraph(G, startNode);
 	}
 
@@ -110,6 +116,30 @@ public class BreadthFirstSearch {
 			System.out.println("Node " + i + " distance to StartNode: " + dist[i][0]);
 		}
 		// return parent;
+	}
+
+	/**
+	 * Looking at Point 'u' and Point 'v' whether they have an Edge
+	 * 
+	 * @param u
+	 *            Parent-Node
+	 * @param v
+	 *            Neighbor-Node
+	 * @return @boolean true or false
+	 */
+	private static boolean isEdgeInit(int u, int v) {
+		@SuppressWarnings("unchecked")
+		Collection<Vertex> neighbor = graph.getNeighbours(u);
+
+		for (@SuppressWarnings("rawtypes")
+		Iterator i = neighbor.iterator(); i.hasNext();) {
+			Vertex x = (Vertex) i.next();
+			if (x.equals(graph.getVertex(v))) {
+				((PaintPanel) paintArea).addEdge("GRAY", u, v);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
