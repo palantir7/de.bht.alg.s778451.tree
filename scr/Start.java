@@ -16,6 +16,7 @@ import javax.swing.border.BevelBorder;
 import paint.PaintPanel;
 import algo.BreadthFirstSearch;
 import algo.DepthFirstSearch;
+import algo.Dijkstra;
 
 /**
  * @author Marcel Buchmann (s778451)
@@ -45,6 +46,9 @@ class Start extends JFrame implements ActionListener {
 	private static JButton button3;
 	private static JButton button4;
 	private static JButton button5;
+	private static JButton button6;
+	private static JButton button7;
+	private static JButton button8;
 	@SuppressWarnings("unused")
 	private static JPanel mainPanel;
 	private static JPanel paintPanel;
@@ -119,6 +123,15 @@ class Start extends JFrame implements ActionListener {
 		button5 = new JButton("Kruskal - Algo");
 		button5.addActionListener(this);
 		iPanel.add(button5);
+		button6 = new JButton("Floyd - Algo");
+		button6.addActionListener(this);
+		iPanel.add(button6);
+		button7 = new JButton("Bellman Ford - Algo");
+		button7.addActionListener(this);
+		iPanel.add(button7);
+		button8 = new JButton("---");
+		button8.addActionListener(this);
+		iPanel.add(button8);
 
 		// add panels to mainframe
 		this.getContentPane().add(paintPanel, BorderLayout.CENTER);
@@ -198,8 +211,8 @@ class Start extends JFrame implements ActionListener {
 				((PaintPanel) paintPanel).resetElementBuffer();
 				// TODO: Fill me ...
 				PaintPanel.setStatus(true);
-				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!",
-						"RED", 99);
+				Dijkstra.run(this.file, (PaintPanel) paintPanel);
+				PaintPanel.setStatus(true);
 				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		} else if (e.getSource() == button5) {
@@ -207,6 +220,36 @@ class Start extends JFrame implements ActionListener {
 				// Kruskal
 				((PaintPanel) paintPanel).resetElementBuffer();
 				// TODO: Fill me ...
+				PaintPanel.setStatus(true);
+				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!",
+						"RED", 99);
+				((PaintPanel) paintPanel).addNode("BLACK", 0);
+			}
+		} else if (e.getSource() == button6) {
+			if (this.file != null) {
+				// Floyd
+				((PaintPanel) paintPanel).resetElementBuffer();
+				// TODO: Fill me ...
+				PaintPanel.setStatus(true);
+				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!",
+						"RED", 99);
+				((PaintPanel) paintPanel).addNode("BLACK", 0);
+			}
+		} else if (e.getSource() == button7) {
+			if (this.file != null) {
+				// Bellman Ford
+				((PaintPanel) paintPanel).resetElementBuffer();
+				// TODO: Fill me ...
+				PaintPanel.setStatus(true);
+				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!",
+						"RED", 99);
+				((PaintPanel) paintPanel).addNode("BLACK", 0);
+			}
+		} else if (e.getSource() == button8) {
+			if (this.file != null) {
+				// ---
+				((PaintPanel) paintPanel).resetElementBuffer();
+				// TODO: Fill mee ...
 				PaintPanel.setStatus(true);
 				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!",
 						"RED", 99);
