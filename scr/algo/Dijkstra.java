@@ -5,9 +5,7 @@ package algo;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
-
+import java.util.PriorityQueue;
 import graph.Edge;
 import graph.Graph;
 import graph.GraphLesen;
@@ -20,7 +18,7 @@ import paint.PaintPanel;
  * @version 1.0.0
  * @date 11.11.2012
  * @project de.bht.alg.s778451.tree
- *
+ * 
  */
 public class Dijkstra {
 
@@ -28,6 +26,8 @@ public class Dijkstra {
 	private static Graph graph;
 	private static PaintPanel paintArea;
 	private static int[][] pos;
+	private static String[][] tbl;
+	private static int tblSize;
 
 	/**
 	 * Running (Initialization)
@@ -35,93 +35,126 @@ public class Dijkstra {
 	 * @param args
 	 *            Filepath as String
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void run(String file, PaintPanel panel) {
 		// Set PaintPanel
 		paintArea = panel;
 		// URL to Targetfile
 		String url = file;
 		// Generate Graph of Targetfile
-		Graph<Vertex, Edge<Vertex>> G = GraphLesen.FileToWeightedGraph(url, false);
+		Graph<Vertex, Edge<Vertex>> G = GraphLesen.FileToWeightedGraph(url,
+				false);
 		Dijkstra.setGraph(G);
 
+		// Zeichne Kanten
 		for (int i = 0; i < graph.getNumberVertices(); i++) {
 			for (int j = 0; j < graph.getNumberVertices(); j++) {
 				isEdgeInit(i, j);
 			}
+		}
 
-			System.out.println(graph.getIncidentEdges(i));
-//			[(0,1; g:1), (0,2; g:4)]
-//			[(1,0; g:1), (1,3; g:4), (1,2; g:2), (1,4; g:1)]
-//			[(2,0; g:4), (2,1; g:2), (2,5; g:1)]
-//			[(3,1; g:4), (3,6; g:1), (3,5; g:4)]
-//			[(4,1; g:1), (4,5; g:1)]
-//			[(5,2; g:1), (5,4; g:1), (5,6; g:4), (5,3; g:4)]
-//			[(6,3; g:1), (6,5; g:4)]
+		// Initialisierung
+		int count = 0;
+		tbl = new String[graph.getEdges().size()][3];
+		tblSize = graph.getEdges().size();
+
+		// Iteriere über Kanten und sammel Daten in tbl
+		Iterator<Edge> i = graph.getEdges().iterator();
+		while (i.hasNext()) {
+			Edge x = i.next();
+			tbl[count][0] = x.getVertexA().toString(); // Vertex A
+			tbl[count][1] = x.getVertexB().toString(); // Vertex B
+			tbl[count][2] = "" + x.getWeight(); // Weight
+			count++;
 		}
 
 		// (only for tests in use) !!!
-		int startNode = 0;
-		readGraph(G, startNode);
+		Vertex startNode = G.getVertex(0);
+		Vertex stopNode = G.getVertex(6);
+		readGraph(G, startNode, stopNode);
 	}
 
 	/**
-	 * Read the Graph (First Iteration of Tree)
+	 * Read the Graph (Iteration of Graph)
 	 * 
 	 * @param G
-	 *            the @Graph
+	 *            Graph
+	 * @param start
+	 *            Startnode
+	 * @param stop
+	 *            Stopnode
 	 */
-	@SuppressWarnings({ "rawtypes" })
-	public static void readGraph(Graph G, int startNode) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static void readGraph(Graph G, Vertex start, Vertex stop) {
 
-		Queue<Integer> theQueue = new LinkedList<Integer>();
+		// Priority-Queue zum Verwalten der Laenge des kuerzesten Weges bis zum
+		// Knoten
+		PriorityQueue<Vertex> pQ = new PriorityQueue<Vertex>();
 
-		int[] parent = new int[graph.getNumberVertices()];
-		int[][] dist = new int[graph.getNumberVertices()][1];
-
-		for (int i = 0; i < graph.getNumberVertices(); i++) {
-
-			((PaintPanel) paintArea).addNode("WHITE", i);
-			((PaintPanel) paintArea).addText("" + i, "BLACK", i);
-
-			parent[i] = -1;
+		Collection<Vertex> V = G.getVertices();
+		// fuer jeden Knoten
+		for (Vertex v : V) {
+			// Entfernung ist unendlich
+			v.setDist(Double.MAX_VALUE);
+			// Knoten noch nicht gesehen
+			v.setSeen(false);
+			// Vorgaenger noch nicht ermittelt
+			v.setPrev(null);
 		}
 
-		boolean[] identified = new boolean[graph.getNumberVertices()];
-		identified[startNode] = true;
+		// endgueltige Kosten zum Startknoten
+		start.setDist(0);
+		// erster Eintrag in PriorityQueue
+		pQ.add(start);
 
-		((PaintPanel) paintArea).addNode("GRAY", startNode);
+		// solange noch Eintraege in Priority-Queue
+		while (!pQ.isEmpty()) {
 
-		theQueue.offer(startNode);
+			// billigster Eintrag in PriorityQueue
+			Vertex v = pQ.poll();
+			// falls schon bearbeitet: ignorieren
+			if (v.isSeen()) continue;
+			// als bearbeitet markieren
+			v.setSeen(true);
 
-		while (!theQueue.isEmpty()) {
-			int currentNode = theQueue.remove();
-			Iterator itr = graph.getNeighbours(currentNode).iterator();
+			Collection<Vertex> edges = G.getNeighbours(v);
+			System.out.println(edges);
 
-			dist[currentNode][0]++;
-			isEdge(startNode, currentNode);
-
-			while (itr.hasNext()) {
-				int nextNode = Integer.parseInt(itr.next().toString());
-
-				if (!identified[nextNode]) {
-					isEdge(currentNode, nextNode);
-
-					identified[nextNode] = true;
-
-					((PaintPanel) paintArea).addNode("GRAY", nextNode);
-
-					theQueue.offer(nextNode);
-					parent[nextNode] = currentNode;
-					dist[nextNode][0] = dist[nextNode][0]
-							+ dist[currentNode][0];
+			// fuer jede Nachbarkante e von v tue
+			for (Vertex e : edges) {
+				// besorge Zielknoten w
+				Vertex w = e;
+				// initalisiert die Distanz auf 0
+				int dist = 0;
+				// sucht in der tbl nach den Knotenpaar v & w und deren Distanz
+				for (int i = 0; i < tblSize; i++) {
+					if (tbl[i][0].matches("" + v.getId())
+							&& tbl[i][1].equals("" + w.getId())) {
+						dist = Integer.parseInt(tbl[i][2]);
+					} else if (tbl[i][0].matches("" + w.getId())
+							&& tbl[i][1].matches("" + v.getId())) {
+						dist = Integer.parseInt(tbl[i][2]);
+					}
 				}
-
-				((PaintPanel) paintArea).addNode("BLACK", currentNode);
-				((PaintPanel) paintArea).addText("   Dist: "
-						+ (dist[currentNode][0] - 1), "BLACK", currentNode);
+				// besorge Kosten c zum Zielknoten w
+				double c = dist;
+				// falls Kantenkosten negativ
+				if (c < 0) throw new
+				// melde Fehler
+				RuntimeException("Negativ");
+				// falls Verkuerzung moeglich
+				double newDist = v.getDist() + c;
+				if (w.getDist() > newDist) {
+					// setze neue Verkuerzung
+					w.setDist(newDist);
+					// notiere verursachenden Vorgaenger
+					w.setPrev(v);
+					// neuer Eintrag in PriorityQueue
+					pQ.add(w);
+					System.out.println(w);
+				}
 			}
 		}
-		// return parent;
 	}
 
 	/**
@@ -157,6 +190,7 @@ public class Dijkstra {
 	 *            Neighbor-Node
 	 * @return @boolean true or false
 	 */
+	@SuppressWarnings("unused")
 	private static boolean isEdge(int u, int v) {
 		@SuppressWarnings("unchecked")
 		Collection<Vertex> neighbor = graph.getNeighbours(u);
