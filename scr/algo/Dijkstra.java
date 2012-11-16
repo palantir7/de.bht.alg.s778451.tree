@@ -3,8 +3,11 @@
  */
 package algo;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.PriorityQueue;
 import graph.Edge;
 import graph.Graph;
@@ -20,13 +23,15 @@ import paint.PaintPanel;
  * @project de.bht.alg.s778451.tree
  * 
  */
-public class Dijkstra {
+public class Dijkstra implements Comparable<Vertex> {
 
 	@SuppressWarnings("rawtypes")
 	private static Graph graph;
 	private static PaintPanel paintArea;
 	private static int[][] pos;
+	@SuppressWarnings("unused")
 	private static String[][] tbl;
+	@SuppressWarnings("unused")
 	private static int tblSize;
 
 	/**
@@ -35,7 +40,6 @@ public class Dijkstra {
 	 * @param args
 	 *            Filepath as String
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void run(String file, PaintPanel panel) {
 		// Set PaintPanel
 		paintArea = panel;
@@ -44,34 +48,32 @@ public class Dijkstra {
 		// Generate Graph of Targetfile
 		Graph<Vertex, Edge<Vertex>> G = GraphLesen.FileToWeightedGraph(url,
 				false);
+
+		System.out.println("Running Dijkstra ... with "
+				+ G.getVertices().size() + " Vertices...");
+
+		// Zeichne Knoten ein
+		for (Vertex v : G.getVertices()) {
+			((PaintPanel) paintArea).addNode("WHITE", v.getId());
+		}
+
 		Dijkstra.setGraph(G);
 
-		// Zeichne Kanten
-		for (int i = 0; i < graph.getNumberVertices(); i++) {
-			for (int j = 0; j < graph.getNumberVertices(); j++) {
-				isEdgeInit(i, j);
-			}
-		}
-
-		// Initialisierung
-		int count = 0;
-		tbl = new String[graph.getEdges().size()][3];
-		tblSize = graph.getEdges().size();
-
-		// Iteriere über Kanten und sammel Daten in tbl
-		Iterator<Edge> i = graph.getEdges().iterator();
-		while (i.hasNext()) {
-			Edge x = i.next();
-			tbl[count][0] = x.getVertexA().toString(); // Vertex A
-			tbl[count][1] = x.getVertexB().toString(); // Vertex B
-			tbl[count][2] = "" + x.getWeight(); // Weight
-			count++;
-		}
-
 		// (only for tests in use) !!!
-		Vertex startNode = G.getVertex(0);
-		Vertex stopNode = G.getVertex(6);
-		readGraph(G, startNode, stopNode);
+		Vertex startNode = G.getVertex(3);
+
+		readGraph(G, startNode);
+
+		for (Vertex v : G.getVertices()) {
+			int dist = (int) v.minDistance;
+
+			System.out.println("Kürzester Weg von " + startNode.getId() + " zu " + v.getId());
+			System.out.println("Pfad: " + getShortestPathTo(v) + " Distanz: " + dist);
+
+			((PaintPanel) paintArea).addNode("BLACK", v.getId());
+			((PaintPanel) paintArea).addText("   Dist: " + dist, "BLACK",
+					v.getId());
+		}
 	}
 
 	/**
@@ -85,76 +87,80 @@ public class Dijkstra {
 	 *            Stopnode
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void readGraph(Graph G, Vertex start, Vertex stop) {
+	public static void readGraph(Graph G, Vertex start) {
 
-		// Priority-Queue zum Verwalten der Laenge des kuerzesten Weges bis zum
-		// Knoten
-		PriorityQueue<Vertex> pQ = new PriorityQueue<Vertex>();
+		((PaintPanel) paintArea).addNode("RED", start.getId());
+		((PaintPanel) paintArea).addText("" + start.getId(), "BLACK",
+				start.getId());
 
-		Collection<Vertex> V = G.getVertices();
-		// fuer jeden Knoten
-		for (Vertex v : V) {
-			// Entfernung ist unendlich
-			v.setDist(Double.MAX_VALUE);
-			// Knoten noch nicht gesehen
-			v.setSeen(false);
-			// Vorgaenger noch nicht ermittelt
-			v.setPrev(null);
-		}
+		start.minDistance = 0.;
+		PriorityQueue<Vertex> vertexQueue = new PriorityQueue<Vertex>();
+		vertexQueue.add(start);
 
-		// endgueltige Kosten zum Startknoten
-		start.setDist(0);
-		// erster Eintrag in PriorityQueue
-		pQ.add(start);
+		@SuppressWarnings("unused")
+		int count = 0;
 
-		// solange noch Eintraege in Priority-Queue
-		while (!pQ.isEmpty()) {
+		while (!vertexQueue.isEmpty()) {
+			Vertex u = vertexQueue.poll();
 
-			// billigster Eintrag in PriorityQueue
-			Vertex v = pQ.poll();
-			// falls schon bearbeitet: ignorieren
-			if (v.isSeen()) continue;
-			// als bearbeitet markieren
-			v.setSeen(true);
+			Collection<Edge> edges = G.getEdges();
 
-			Collection<Vertex> edges = G.getNeighbours(v);
-			System.out.println(edges);
+			// Zeichne Bennenung und Initnode des aktuellen Knotens
+			((PaintPanel) paintArea)
+					.addText("" + u.getId(), "BLACK", u.getId());
+			((PaintPanel) paintArea).addNode("WHITE", start.getId());
 
-			// fuer jede Nachbarkante e von v tue
-			for (Vertex e : edges) {
-				// besorge Zielknoten w
-				Vertex w = e;
-				// initalisiert die Distanz auf 0
-				int dist = 0;
-				// sucht in der tbl nach den Knotenpaar v & w und deren Distanz
-				for (int i = 0; i < tblSize; i++) {
-					if (tbl[i][0].matches("" + v.getId())
-							&& tbl[i][1].equals("" + w.getId())) {
-						dist = Integer.parseInt(tbl[i][2]);
-					} else if (tbl[i][0].matches("" + w.getId())
-							&& tbl[i][1].matches("" + v.getId())) {
-						dist = Integer.parseInt(tbl[i][2]);
-					}
-				}
-				// besorge Kosten c zum Zielknoten w
-				double c = dist;
-				// falls Kantenkosten negativ
-				if (c < 0) throw new
-				// melde Fehler
-				RuntimeException("Negativ");
-				// falls Verkuerzung moeglich
-				double newDist = v.getDist() + c;
-				if (w.getDist() > newDist) {
-					// setze neue Verkuerzung
-					w.setDist(newDist);
-					// notiere verursachenden Vorgaenger
-					w.setPrev(v);
-					// neuer Eintrag in PriorityQueue
-					pQ.add(w);
-					System.out.println(w);
+			// Konsolenausgabe für die aktuelle Runde
+			count++;
+			System.out.println("Calculate ... Rounts of Node " + u.getId());
+
+			// Schaut sich die Kanten zu verbundenen Knoten an
+			for (Edge edge : edges) {
+				// holt isch von der Kante den anderen Vertex
+				Vertex v = edge.getVertexB();
+
+				// besorgt sich die Daten der Kante
+				double weight = edge.getWeight();
+				double distanceThroughU = u.minDistance + weight;
+
+				// Zeige Änderungen in der Grafik an
+				((PaintPanel) paintArea).addNode("GRAY", u.getId());
+				isEdgeInit(u.getId(), v.getId());
+				((PaintPanel) paintArea).addNode("RED", u.getId());
+
+				// schaut ob die Distanz sich verringert
+				if (distanceThroughU < v.minDistance) {
+					// Stellt die geänderte Kante da
+					isEdgeChange(u.getId(), v.getId());
+					// entfernt alten Vertex
+					vertexQueue.remove(v);
+					// setzt die neue Distanz für dieses Vertex
+					v.minDistance = distanceThroughU;
+					// setzt Vorgängervertex
+					v.previous = u;
+					// Added den geänderten Vertex in die Queue
+					vertexQueue.add(v);
+				} else if (distanceThroughU == v.minDistance) {
+					// färbe die Kante wenn sich nichts ändert
+					isEdgeInit(v.getId(), u.getId());
 				}
 			}
 		}
+	}
+
+	/**
+	 * Shortest Path to Vertex
+	 * @param target
+	 *            is a @Vertex
+	 * @return List of @Vertices
+	 */
+	public static List<Vertex> getShortestPathTo(Vertex target) {
+		List<Vertex> path = new ArrayList<Vertex>();
+		for (Vertex vertex = target; vertex != null; vertex = vertex.previous) {
+			path.add(vertex);
+		}
+		Collections.reverse(path);
+		return path;
 	}
 
 	/**
@@ -192,6 +198,30 @@ public class Dijkstra {
 	 */
 	@SuppressWarnings("unused")
 	private static boolean isEdge(int u, int v) {
+		@SuppressWarnings("unchecked")
+		Collection<Vertex> neighbor = graph.getNeighbours(u);
+
+		for (@SuppressWarnings("rawtypes")
+		Iterator i = neighbor.iterator(); i.hasNext();) {
+			Vertex x = (Vertex) i.next();
+			if (x.equals(graph.getVertex(v))) {
+				((PaintPanel) paintArea).addEdge("BLACK", u, v);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Looking at Point 'u' and Point 'v' whether they have an Edge
+	 * 
+	 * @param u
+	 *            Parent-Node
+	 * @param v
+	 *            Neighbor-Node
+	 * @return @boolean true or false
+	 */
+	private static boolean isEdgeChange(int u, int v) {
 		@SuppressWarnings("unchecked")
 		Collection<Vertex> neighbor = graph.getNeighbours(u);
 
@@ -246,6 +276,12 @@ public class Dijkstra {
 	 */
 	public static void setPos(int[][] pos) {
 		Dijkstra.pos = pos;
+	}
+
+	@Override
+	public int compareTo(Vertex o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

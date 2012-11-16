@@ -12,7 +12,7 @@ package graph;
 public class Edge<V extends Vertex> {
 	private V vertexA;
 	private V vertexB;
-	private int weight = 1;
+	private double weight = 1;
 
 	public Edge(V vertexA, V vertexB, int weight) {
 		super();
@@ -35,7 +35,7 @@ public class Edge<V extends Vertex> {
 		return vertexB;
 	}
 
-	public int getWeight() {
+	public double getWeight() {
 		return weight;
 	}
 

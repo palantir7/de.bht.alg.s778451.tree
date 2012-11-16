@@ -6,19 +6,11 @@ package graph;
  * @author ripphausen
  * @version 1.0
  */
-public class Vertex {
+public class Vertex implements Comparable<Vertex> {
 	private int id;
-	private double dist;
 	private boolean seen;
-	private Vertex prev;
-
-	public Vertex getPrev() {
-		return prev;
-	}
-
-	public void setPrev(Vertex prev) {
-		this.prev = prev;
-	}
+	public Vertex previous;
+	public double minDistance = Double.POSITIVE_INFINITY;
 
 	public boolean isSeen() {
 		return seen;
@@ -31,14 +23,6 @@ public class Vertex {
 	public Vertex(int id) {
 		this.id = id;
 	}
-	
-	public double getDist() {
-		return dist;
-	}
-	
-	public void setDist(double maxValue) {
-		this.dist = maxValue;
-	}
 
 	public int getId() {
 		return id;
@@ -46,5 +30,9 @@ public class Vertex {
 
 	public String toString() {
 		return new Integer(id).toString();
+	}
+
+	public int compareTo(Vertex other) {
+		return Double.compare(minDistance, other.minDistance);
 	}
 }

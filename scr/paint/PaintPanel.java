@@ -75,7 +75,7 @@ public class PaintPanel extends JPanel {
 
 		if (isStatus() == true) {
 			// TODO: Timer
-			int mod = count % 750;
+			int mod = count % 250;
 			if (mod == 0) {
 				if (frame < elementBuffer.size()) {
 					// System.out.println(getElement(frame));
@@ -142,7 +142,12 @@ public class PaintPanel extends JPanel {
 			getGraphic().fillOval(x, y, 10, 10);
 			getGraphic().setColor(Color.BLACK);
 			getGraphic().drawOval(x, y, 10, 10);
-		} else {
+		} else if (color.equals("RED")) {
+			getGraphic().setColor(Color.RED);
+			getGraphic().fillOval(x, y, 10, 10);
+			getGraphic().setColor(Color.BLACK);
+			getGraphic().drawOval(x, y, 10, 10);
+		} else  {
 			getGraphic().setColor(Color.WHITE);
 			getGraphic().fillOval(x, y, 10, 10);
 			getGraphic().setColor(Color.BLACK);
@@ -170,6 +175,10 @@ public class PaintPanel extends JPanel {
 			getArrow(x, y, toX, toY);
 		} else if (color.equals("RED")) {
 			getGraphic().setColor(Color.RED);
+			getGraphic().drawLine(x + 5, y + 5, toX + 5, toY + 5);
+			getArrow(x, y, toX, toY);
+		} else if (color.equals("BLUE")) {
+			getGraphic().setColor(Color.BLUE);
 			getGraphic().drawLine(x + 5, y + 5, toX + 5, toY + 5);
 			getArrow(x, y, toX, toY);
 		} else {
