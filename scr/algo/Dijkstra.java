@@ -1,6 +1,3 @@
-/**
- * 
- */
 package algo;
 
 import java.util.ArrayList;
@@ -60,18 +57,20 @@ public class Dijkstra implements Comparable<Vertex> {
 		Dijkstra.setGraph(G);
 
 		// (only for tests in use) !!!
-		Vertex startNode = G.getVertex(3);
+		Vertex startNode = G.getVertex(0);
 
 		readGraph(G, startNode);
 
+		// Auslesen der Daten und Ausgabe
 		for (Vertex v : G.getVertices()) {
-			int dist = (int) v.minDistance;
+			double dist = v.minDistance;
 
-			System.out.println("Kürzester Weg von " + startNode.getId() + " zu " + v.getId());
-			System.out.println("Pfad: " + getShortestPathTo(v) + " Distanz: " + dist);
+			System.out.println("Kürzester Weg von " + startNode.getId()
+					+ " zu " + v.getId() + " Pfad: " + getShortestPathTo(v)
+					+ " Distanz: " + dist);
 
 			((PaintPanel) paintArea).addNode("BLACK", v.getId());
-			((PaintPanel) paintArea).addText("   Dist: " + dist, "BLACK",
+			((PaintPanel) paintArea).addText(" Dist: " + dist, "BLACK",
 					v.getId());
 		}
 	}
@@ -112,7 +111,8 @@ public class Dijkstra implements Comparable<Vertex> {
 
 			// Konsolenausgabe für die aktuelle Runde
 			count++;
-			System.out.println("Calculate ... Rounts of Node " + u.getId());
+			System.out.println("Calculate ... Rounts of Node " + u.getId()
+					+ " Queue: " + vertexQueue);
 
 			// Schaut sich die Kanten zu verbundenen Knoten an
 			for (Edge edge : edges) {
@@ -150,6 +150,7 @@ public class Dijkstra implements Comparable<Vertex> {
 
 	/**
 	 * Shortest Path to Vertex
+	 * 
 	 * @param target
 	 *            is a @Vertex
 	 * @return List of @Vertices

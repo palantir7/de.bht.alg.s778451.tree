@@ -9,10 +9,10 @@ package graph;
  *            eine Unterklasse der Knotenklasse Vertex zur Repräsentation der
  *            Endknoten der Kante
  */
-public class Edge<V extends Vertex> {
+public class Edge<V extends Vertex> implements Comparable<Object> {
 	private V vertexA;
 	private V vertexB;
-	private double weight = 1;
+	public double weight = 1;
 
 	public Edge(V vertexA, V vertexB, int weight) {
 		super();
@@ -44,7 +44,17 @@ public class Edge<V extends Vertex> {
 	}
 
 	public String toString() {
-		return "(" + vertexA.getId() + "," + vertexB.getId() + "; g:"
-				+ this.weight + ")";
+		try {
+			return "(" + vertexA.getId() + "," + vertexB.getId() + "; g:"
+					+ this.weight + ")";
+		} catch (Exception e) {
+			return "";
+		}
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
