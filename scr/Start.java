@@ -1,13 +1,20 @@
+import graph.Edge;
+import graph.Graph;
+import graph.GraphLesen;
+import graph.Vertex;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -50,8 +57,12 @@ class Start extends JFrame implements ActionListener {
 	private static JButton button6;
 	private static JButton button7;
 	private static JButton button8;
-	public static JTextField txtFrom;
-	public static JTextField txtTo;
+	@SuppressWarnings("rawtypes")
+	public static JComboBox txtFrom;
+	@SuppressWarnings("rawtypes")
+	public static JComboBox txtTo;
+	public static JTextField txtStatus;
+
 	@SuppressWarnings("unused")
 	private static JPanel mainPanel;
 	private static JPanel paintPanel;
@@ -93,6 +104,7 @@ class Start extends JFrame implements ActionListener {
 	/**
 	 * initComponents()
 	 */
+	@SuppressWarnings("rawtypes")
 	private void initComponents() {
 
 		// center to screen
@@ -120,9 +132,9 @@ class Start extends JFrame implements ActionListener {
 		button3 = new JButton("Breadth First Search");
 		button3.addActionListener(this);
 		iPanel.add(button3);
-		txtFrom = new JTextField("Startknoten zB.: 0", 20);
+		txtFrom = new JComboBox();
 		iPanel.add(txtFrom);
-		txtTo = new JTextField("Zielknoten zB.: 5", 20);
+		txtTo = new JComboBox();
 		iPanel.add(txtTo);
 		button4 = new JButton("Dijkstra - Algo");
 		button4.addActionListener(this);
@@ -139,6 +151,8 @@ class Start extends JFrame implements ActionListener {
 		button8 = new JButton("- Clear PaintPanel -");
 		button8.addActionListener(this);
 		iPanel.add(button8);
+		txtStatus = new JTextField("Bereit ...");
+		iPanel.add(txtStatus);
 
 		// add panels to mainframe
 		this.getContentPane().add(paintPanel, BorderLayout.CENTER);
@@ -174,14 +188,29 @@ class Start extends JFrame implements ActionListener {
 	 */
 	// "D:\\SVN\\LAN-HDDs\\ALG\\de.bht.alg.s778451.tree\\scr\\dat"
 	// "C:\\Users\\Marcel\\Documents\\GitHub\\de.bht.alg.s778451.tree\\scr\\dat"
+	@SuppressWarnings({ "unchecked" })
 	public void loadFile() {
 		fc = new JFileChooser(new File(
 				"D:\\SVN\\LAN-HDDs\\ALG\\de.bht.alg.s778451.tree\\scr\\dat"));
 		int returnVal = fc.showOpenDialog(Start.this);
 
+		txtFrom.removeAllItems();
+		txtTo.removeAllItems();
+
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File f = fc.getSelectedFile();
 			this.file = f.getAbsolutePath();
+
+			Graph<Vertex, Edge<Vertex>> G = GraphLesen.FileToWeightedGraph(
+					this.file, false);
+			Collection<Vertex> vertex = G.getVertices();
+			String[] nodes = new String[vertex.size()];
+			for (int i = 0; i < vertex.size(); i++) {
+				nodes[i] = G.getVertex(i).toString();
+				txtFrom.addItem(nodes[i]);
+				txtTo.addItem(nodes[i]);
+			}
+			this.repaint();
 		} else {
 			this.file = null;
 		}
@@ -193,9 +222,12 @@ class Start extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		PaintPanel.setStatus(false);
+		txtStatus.setText("Beginne Berechung ...");
 
 		if (e.getSource() == button1) {
+			txtStatus.setText("Lade Datei ...");
 			this.loadFile();
+			txtStatus.setText("Bereit ...");
 		} else if (e.getSource() == button2) {
 			if (this.file != null) {
 				((PaintPanel) paintPanel).clearArea();
@@ -220,12 +252,17 @@ class Start extends JFrame implements ActionListener {
 				((PaintPanel) paintPanel).resetElementBuffer();
 				// Dijkstra
 				try {
-					Dijkstra.run(this.file, (PaintPanel) paintPanel,
-							txtFrom.getText(), txtTo.getText());
+					Dijkstra.run(this.file, (PaintPanel) paintPanel, txtFrom
+							.getSelectedItem().toString(), txtTo
+							.getSelectedItem().toString());
+					txtStatus.setText("Bereit ...");
 				} catch (Exception ex) {
+					txtStatus.setText("Fehler aufgetreten ...");
 					((PaintPanel) paintPanel).addText(
-							"FEHLER: Knoten können nicht "
-									+ "ausgewertet werden !!!", "RED", 99);
+							"FEHLER: Knoten können nicht"
+									+ " ausgewertet werden !!!"
+									+ " Negative Kanten entdeckt !!!", "RED",
+							99);
 				}
 				PaintPanel.setStatus(true);
 				((PaintPanel) paintPanel).addNode("BLACK", 0);

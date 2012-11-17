@@ -21,7 +21,7 @@ public class Dijkstra {
 	private static PaintPanel paintArea;
 
 	@SuppressWarnings("rawtypes")
-	public static void run(String file, PaintPanel panel, String from, String to) {
+	public static void run(String file, PaintPanel panel, String from, String to) throws Exception {
 		// Initalisiere Buffer;
 		nodeBuffer = new ArrayList<Node>();
 		// Setzt PaintPanel
@@ -108,9 +108,10 @@ public class Dijkstra {
 
 	/**
 	 * @param G
+	 * @throws Exception 
 	 */
 	@SuppressWarnings("rawtypes")
-	private static void useAlgo(Graph G) {
+	private static void useAlgo(Graph G) throws Exception {
 		// Sammle aus dem Graph die passenden Kanten zu den Knoten
 		for (int n = 0; n < nodeBuffer.size(); n++) {
 			ArrayList<Edges> edgeBuffer = new ArrayList<Edges>();
@@ -126,6 +127,10 @@ public class Dijkstra {
 				if (focus == nodeI) {
 					// Merke dir die Kante und dessen Laenge
 					int traget = e.getVertexB().getId();
+					// Wirf einen Fehler, wenn negative Kantenlängen da sind
+					if (e.getWeight() < 0.) {
+						throw new Exception();
+					}
 					Edges edge = new Edges(nodeBuffer.get(traget),
 							e.getWeight());
 					edgeBuffer.add(edge);
