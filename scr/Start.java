@@ -11,12 +11,13 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
 import paint.PaintPanel;
+import pathfinder.Dijkstra;
 import algo.BreadthFirstSearch;
 import algo.DepthFirstSearch;
-import algo.Dijkstra;
 
 /**
  * @author Marcel Buchmann (s778451)
@@ -49,6 +50,8 @@ class Start extends JFrame implements ActionListener {
 	private static JButton button6;
 	private static JButton button7;
 	private static JButton button8;
+	public static JTextField txtFrom;
+	public static JTextField txtTo;
 	@SuppressWarnings("unused")
 	private static JPanel mainPanel;
 	private static JPanel paintPanel;
@@ -117,6 +120,10 @@ class Start extends JFrame implements ActionListener {
 		button3 = new JButton("Breadth First Search");
 		button3.addActionListener(this);
 		iPanel.add(button3);
+		txtFrom = new JTextField("Startknoten zB.: 0", 20);
+		iPanel.add(txtFrom);
+		txtTo = new JTextField("Zielknoten zB.: 5", 20);
+		iPanel.add(txtTo);
 		button4 = new JButton("Dijkstra - Algo");
 		button4.addActionListener(this);
 		iPanel.add(button4);
@@ -129,7 +136,7 @@ class Start extends JFrame implements ActionListener {
 		button7 = new JButton("Bellman Ford - Algo");
 		button7.addActionListener(this);
 		iPanel.add(button7);
-		button8 = new JButton("---");
+		button8 = new JButton("- Clear PaintPanel -");
 		button8.addActionListener(this);
 		iPanel.add(button8);
 
@@ -191,6 +198,7 @@ class Start extends JFrame implements ActionListener {
 			this.loadFile();
 		} else if (e.getSource() == button2) {
 			if (this.file != null) {
+				((PaintPanel) paintPanel).clearArea();
 				// DFS
 				((PaintPanel) paintPanel).resetElementBuffer();
 				DepthFirstSearch.run(this.file, (PaintPanel) paintPanel);
@@ -199,6 +207,7 @@ class Start extends JFrame implements ActionListener {
 			}
 		} else if (e.getSource() == button3) {
 			if (this.file != null) {
+				((PaintPanel) paintPanel).clearArea();
 				// BFS
 				((PaintPanel) paintPanel).resetElementBuffer();
 				BreadthFirstSearch.run(this.file, (PaintPanel) paintPanel);
@@ -207,53 +216,49 @@ class Start extends JFrame implements ActionListener {
 			}
 		} else if (e.getSource() == button4) {
 			if (this.file != null) {
-				// Dijkstra
+				((PaintPanel) paintPanel).clearArea();
 				((PaintPanel) paintPanel).resetElementBuffer();
-				// TODO: Fill me ...
-				PaintPanel.setStatus(true);
-				Dijkstra.run(this.file, (PaintPanel) paintPanel);
+				// Dijkstra
+				Dijkstra.run(this.file, (PaintPanel) paintPanel, txtFrom.getText(), txtTo.getText());
 				PaintPanel.setStatus(true);
 				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		} else if (e.getSource() == button5) {
 			if (this.file != null) {
-				// Kruskal
+				((PaintPanel) paintPanel).clearArea();
 				((PaintPanel) paintPanel).resetElementBuffer();
+				// Kruskal
 				// TODO: Fill me ...
 				PaintPanel.setStatus(true);
 				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!",
 						"RED", 99);
-				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		} else if (e.getSource() == button6) {
 			if (this.file != null) {
-				// Floyd
+				((PaintPanel) paintPanel).clearArea();
 				((PaintPanel) paintPanel).resetElementBuffer();
+				// Floyd
 				// TODO: Fill me ...
 				PaintPanel.setStatus(true);
 				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!",
 						"RED", 99);
-				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		} else if (e.getSource() == button7) {
 			if (this.file != null) {
-				// Bellman Ford
+				((PaintPanel) paintPanel).clearArea();
 				((PaintPanel) paintPanel).resetElementBuffer();
+				// Bellman Ford
 				// TODO: Fill me ...
 				PaintPanel.setStatus(true);
 				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!",
 						"RED", 99);
-				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		} else if (e.getSource() == button8) {
 			if (this.file != null) {
-				// ---
+				((PaintPanel) paintPanel).clearArea();
 				((PaintPanel) paintPanel).resetElementBuffer();
-				// TODO: Fill mee ...
+				// Clear PaintPanel
 				PaintPanel.setStatus(true);
-				((PaintPanel) paintPanel).addText("Zur Zeit nicht möglich !!!",
-						"RED", 99);
-				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
 		}
 	}

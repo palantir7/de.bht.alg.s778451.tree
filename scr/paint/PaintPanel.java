@@ -40,6 +40,13 @@ public class PaintPanel extends JPanel {
 	public PaintPanel() {
 		initPaintArea();
 	}
+	
+	/**
+	 * Lösche Alles
+	 */
+	public void clearArea() {
+		this.removeAll();
+	}
 
 	/**
 	 * Initialization of PaintArea
@@ -59,7 +66,7 @@ public class PaintPanel extends JPanel {
 	 */
 	private static void breaking() {
 		try {
-			Thread.sleep(100);
+			Thread.sleep(250);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
