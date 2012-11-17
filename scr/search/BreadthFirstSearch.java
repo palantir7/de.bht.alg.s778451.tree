@@ -1,7 +1,7 @@
 /**
  * 
  */
-package algo;
+package search;
 
 import graph.Edge;
 import graph.Graph;

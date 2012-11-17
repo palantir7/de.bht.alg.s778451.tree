@@ -16,8 +16,8 @@ import javax.swing.border.BevelBorder;
 
 import paint.PaintPanel;
 import pathfinder.Dijkstra;
-import algo.BreadthFirstSearch;
-import algo.DepthFirstSearch;
+import search.BreadthFirstSearch;
+import search.DepthFirstSearch;
 
 /**
  * @author Marcel Buchmann (s778451)
