@@ -20,6 +20,7 @@ public class Dijkstra {
 	private static ArrayList<Node> nodeBuffer;
 	private static PaintPanel paintArea;
 
+	@SuppressWarnings("rawtypes")
 	public static void run(String file, PaintPanel panel, String from, String to) {
 		// Initalisiere Buffer;
 		nodeBuffer = new ArrayList<Node>();
@@ -44,6 +45,12 @@ public class Dijkstra {
 		int startNode = Integer.parseInt(from);
 		computePaths(nodeBuffer.get(startNode));
 
+		// Zeichne alle Kanten ein
+		for (Edge e : G.getEdges()) {
+			((PaintPanel) paintArea).addEdge("GRAY", e.getVertexA().getId(), e
+					.getVertexB().getId());
+		}
+
 		// Gib die kuerzeste Strecke zu einem Target Knoten aus
 		System.out.println("Beginne mit Zeichnen ...");
 		for (Node v : vertices) {
@@ -63,11 +70,11 @@ public class Dijkstra {
 
 				// Zeiche Pfad ein
 				List<Node> path = getShortestPathTo(v);
-				
+
 				String text = "Distance from " + from + " to " + to + ": "
 						+ v.minDistance + "  Path: " + path;
 				((PaintPanel) paintArea).addText(text, "BLACK", 99);
-				
+
 				for (int i = 0; i < path.size(); i++) {
 					int von = 0;
 					int zu = Integer.parseInt(path.get(i).toString());
