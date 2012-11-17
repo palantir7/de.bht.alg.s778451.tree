@@ -219,7 +219,14 @@ class Start extends JFrame implements ActionListener {
 				((PaintPanel) paintPanel).clearArea();
 				((PaintPanel) paintPanel).resetElementBuffer();
 				// Dijkstra
-				Dijkstra.run(this.file, (PaintPanel) paintPanel, txtFrom.getText(), txtTo.getText());
+				try {
+					Dijkstra.run(this.file, (PaintPanel) paintPanel,
+							txtFrom.getText(), txtTo.getText());
+				} catch (Exception ex) {
+					((PaintPanel) paintPanel).addText(
+							"FEHLER: Knoten können nicht "
+									+ "ausgewertet werden !!!", "RED", 99);
+				}
 				PaintPanel.setStatus(true);
 				((PaintPanel) paintPanel).addNode("BLACK", 0);
 			}
