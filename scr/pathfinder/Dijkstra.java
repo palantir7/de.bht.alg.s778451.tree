@@ -76,7 +76,7 @@ public class Dijkstra {
 				((PaintPanel) paintArea).addText(text, "BLACK", 99);
 
 				for (int i = 0; i < path.size(); i++) {
-					int von = 0;
+					int von = Integer.parseInt(path.get(i).name);
 					int zu = Integer.parseInt(path.get(i).toString());
 					if (i > 0) {
 						int n = i - 1;
