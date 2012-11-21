@@ -71,10 +71,12 @@ public class Dijkstra {
 				// Zeiche Pfad ein
 				List<Node> path = getShortestPathTo(v);
 
+				// gib den Text in der PaintPanel aus
 				String text = "Distance from " + from + " to " + to + ": "
 						+ v.minDistance + "  Path: " + path;
 				((PaintPanel) paintArea).addText(text, "BLACK", 99);
 
+				// Zeichnet den genutzten Pfad rot ein
 				for (int i = 0; i < path.size(); i++) {
 					int von = Integer.parseInt(path.get(i).name);
 					int zu = Integer.parseInt(path.get(i).toString());
@@ -97,12 +99,14 @@ public class Dijkstra {
 	private static void readNodes(Graph G) {
 		// Iteriere ueber die Knoten
 		Iterator itr = G.getVertices().iterator();
+		// verlager die Knoten in den Buffer
 		while (itr.hasNext()) {
 			Vertex v = (Vertex) itr.next();
 			String name = "" + v.getId();
 			Node n = new Node(name);
 			nodeBuffer.add(n);
 		}
+		// Debugausgabe
 		System.out.println("Knoten eingelesen ...");
 	}
 
